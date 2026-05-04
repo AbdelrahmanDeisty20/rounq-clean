@@ -13,7 +13,8 @@ function check($title, $condition, $errorMsg) {
 echo "<h2>فحص توافق الاستضافة مع لارافيل</h2>";
 
 // 1. PHP Version
-check("إصدار PHP", version_compare(phpversion(), '8.2.0', '>='), "الإصدار الحالي " . phpversion() . " والمطلوب 8.2+");
+$currentV = phpversion();
+check("إصدار PHP الحالي هو ($currentV)", version_compare($currentV, '8.3.0', '>='), "المطلوب 8.3.0 على الأقل حسب ملف composer.json");
 
 // 2. Env File
 check("ملف الـ .env", file_exists('.env'), "ملف .env غير موجود في المجلد الرئيسي");

@@ -1,0 +1,12 @@
+<?php
+require __DIR__.'/../vendor/autoload.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
+$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+$kernel->bootstrap();
+
+$settings = \App\Models\Setting::all();
+echo "Settings Count: " . $settings->count() . "\n";
+foreach ($settings as $s) {
+    echo "Key: " . $s->key . "\n";
+    echo "Value: " . json_encode($s->value) . "\n";
+}

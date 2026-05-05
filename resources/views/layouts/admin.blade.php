@@ -130,11 +130,27 @@
         </main>
     </div>
 
+    <div id="sidebarBackdrop" class="admin-sidebar-backdrop"></div>
+
     <script>
         function toggleAdminSidebar() {
-            $('#adminSidebar').toggleClass('open');
+            const sidebar = $('#adminSidebar');
+            const backdrop = $('#sidebarBackdrop');
+            sidebar.toggleClass('open');
+            if (sidebar.hasClass('open')) {
+                backdrop.addClass('show');
+            } else {
+                backdrop.removeClass('show');
+            }
         }
+
         $(document).ready(function() {
+            // Close sidebar when clicking backdrop
+            $('#sidebarBackdrop').on('click', function() {
+                $('#adminSidebar').removeClass('open');
+                $(this).removeClass('show');
+            });
+
             // CSRF Setup for AJAX
             $.ajaxSetup({
                 headers: {

@@ -154,8 +154,10 @@ function uploadImage(e, targetId) {
 }
 
 function renderAllRepeaters() {
-    renderRepeater('whyFeatures', homeSettings.why?.features || []);
-    renderRepeater('steps', homeSettings.steps?.items || []);
+    const whyItems = (homeSettings.why && homeSettings.why.features) ? homeSettings.why.features : [];
+    const stepItems = (homeSettings.steps && homeSettings.steps.items) ? homeSettings.steps.items : [];
+    renderRepeater('whyFeatures', whyItems);
+    renderRepeater('steps', stepItems);
 }
 
 function renderRepeater(type, items) {
@@ -170,6 +172,10 @@ function renderRepeater(type, items) {
             <div class="form-grid">
                 <div class="form-group-admin"><label>الأيقونة (FontAwesome)</label><input value="${it.icon||''}" onchange="updateItem('${type}', ${i}, 'icon', this.value)"></div>
                 <div class="form-group-admin"><label>العنوان</label><input value="${it.title||''}" onchange="updateItem('${type}', ${i}, 'title', this.value)"></div>
+                ${type === 'steps' ? `
+                <div class="form-group-admin"><label>رابط الاتصال (اختياري)</label><input value="${it.call_link||''}" onchange="updateItem('${type}', ${i}, 'call_link', this.value)" placeholder="tel:05xxx"></div>
+                <div class="form-group-admin"><label>رابط واتساب (اختياري)</label><input value="${it.wa_link||''}" onchange="updateItem('${type}', ${i}, 'wa_link', this.value)" placeholder="https://wa.me/xxx"></div>
+                ` : ''}
             </div>
             <div class="form-group-admin"><label>الوصف</label><textarea onchange="updateItem('${type}', ${i}, 'desc', this.value)">${it.desc||''}</textarea></div>
         </div>
@@ -177,22 +183,41 @@ function renderRepeater(type, items) {
 }
 
 function updateItem(type, index, key, value) {
-    if(type === 'whyFeatures') homeSettings.why.features[index][key] = value;
-    if(type === 'steps') homeSettings.steps.items[index][key] = value;
+    if(type === 'whyFeatures') {
+        if(!homeSettings.why) homeSettings.why = {features: []};
+        if(!homeSettings.why.features) homeSettings.why.features = [];
+        if(!homeSettings.why.features[index]) homeSettings.why.features[index] = {};
+        homeSettings.why.features[index][key] = value;
+    }
+    if(type === 'steps') {
+        if(!homeSettings.steps) homeSettings.steps = {items: []};
+        if(!homeSettings.steps.items) homeSettings.steps.items = [];
+        if(!homeSettings.steps.items[index]) homeSettings.steps.items[index] = {};
+        homeSettings.steps.items[index][key] = value;
+    }
 }
 
 function addItem(type) {
-    if(!homeSettings.why) homeSettings.why = {features: []};
-    if(!homeSettings.steps) homeSettings.steps = {items: []};
-    const base = {icon: 'fa-check', title: 'عنوان جديد', desc: 'وصف جديد'};
-    if(type === 'whyFeatures') homeSettings.why.features.push(base);
-    if(type === 'steps') homeSettings.steps.items.push(base);
+    if(type === 'whyFeatures') {
+        if(!homeSettings.why) homeSettings.why = {features: []};
+        if(!homeSettings.why.features) homeSettings.why.features = [];
+        homeSettings.why.features.push({icon: 'fa-check', title: 'ميزة جديدة', desc: 'وصف الميزة'});
+    }
+    if(type === 'steps') {
+        if(!homeSettings.steps) homeSettings.steps = {items: []};
+        if(!homeSettings.steps.items) homeSettings.steps.items = [];
+        homeSettings.steps.items.push({icon: 'fa-phone', title: 'خطوة جديدة', desc: 'وصف الخطوة', call_link: '', wa_link: ''});
+    }
     renderAllRepeaters();
 }
 
 function removeItem(type, index) {
-    if(type === 'whyFeatures') homeSettings.why.features.splice(index, 1);
-    if(type === 'steps') homeSettings.steps.items.splice(index, 1);
+    if(type === 'whyFeatures' && homeSettings.why && homeSettings.why.features) {
+        homeSettings.why.features.splice(index, 1);
+    }
+    if(type === 'steps' && homeSettings.steps && homeSettings.steps.items) {
+        homeSettings.steps.items.splice(index, 1);
+    }
     renderAllRepeaters();
 }
 

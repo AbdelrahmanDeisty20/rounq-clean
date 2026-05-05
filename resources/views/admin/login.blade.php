@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    @vite(['resources/css/app.css'])
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
         body { font-family: 'Cairo', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--dark), var(--primary)); margin: 0; }
         .login-box { background: white; border-radius: var(--radius-lg); padding: 48px 40px; width: 100%; max-width: 440px; box-shadow: var(--shadow-lg); text-align: center; }

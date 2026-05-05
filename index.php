@@ -13,6 +13,11 @@ require __DIR__.'/vendor/autoload.php';
 
 $app = require_once __DIR__.'/bootstrap/app.php';
 
-$app->usePublicPath(__DIR__);
+// Smart public path detection: Use 'public' folder if it exists, otherwise use root.
+if (is_dir(__DIR__ . '/public/css')) {
+    $app->usePublicPath(__DIR__ . '/public');
+} else {
+    $app->usePublicPath(__DIR__);
+}
 
 $app->handleRequest(Request::capture());

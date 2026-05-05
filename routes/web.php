@@ -92,4 +92,19 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/contact-settings', [AdminController::class, 'updateContactSettings']);
     Route::post('/seo', [AdminController::class, 'updateSeoSettings']);
     Route::post('/upload-image', [AdminController::class, 'uploadImage']);
+
+    // لفحص بيانات الجاليري في قاعدة البيانات
+    Route::get('/check-gallery', function() {
+        return \App\Models\GalleryImage::all();
+    });
+
+    // لعمل ربط الصور (Symlink) على السيرفر
+    Route::get('/storage-link', function() {
+        try {
+            \Illuminate\Support\Facades\Artisan::call('storage:link');
+            return "تم إنشاء رابط الـ Storage بنجاح ✅";
+        } catch (\Exception $e) {
+            return "خطأ: " . $e->getMessage();
+        }
+    });
 });

@@ -452,28 +452,44 @@ class AdminController extends Controller
 
     public function storeGallery(Request $request)
     {
-        $request->validate([
-            'title' => 'nullable|string',
-            'icon' => 'nullable|string',
-            'category' => 'nullable|string',
-            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
-        ]);
+        try {
+            $request->validate([
+                'title' => 'nullable|string',
+                'icon' => 'nullable|string',
+                'category' => 'nullable|string',
+                'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            ]);
 
-        $data = $request->only(['title', 'icon', 'category']);
+            $data = $request->only(['title', 'icon', 'category']);
 
-        if ($request->hasFile('image_file')) {
-            $destPath = public_path('uploads/gallery');
-            if (!file_exists($destPath)) {
-                mkdir($destPath, 0755, true);
+            if ($request->hasFile('image_file')) {
+                $file = $request->file('image_file');
+                $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                
+                // تحديد المسار ومحاولة إنشائه
+                $destPath = public_path('uploads/gallery');
+                if (!file_exists($destPath)) {
+                    @mkdir($destPath, 0755, true);
+                }
+
+                // محاولة نقل الملف
+                if ($file->move($destPath, $imageName)) {
+                    $data['url'] = '/uploads/gallery/' . $imageName;
+                    $data['icon'] = null;
+                } else {
+                    return response()->json(['success' => false, 'message' => 'فشل في نقل الملف إلى المجلد المستهدف'], 500);
+                }
             }
 
-            $imageName = time() . '_' . uniqid() . '.' . $request->image_file->extension();
-            $request->image_file->move($destPath, $imageName);
-            $data['url'] = '/uploads/gallery/' . $imageName;
-            $data['icon'] = null; // نلغي الأيقونة لو فيه صورة
-        }
+            $result = $this->galleryService->create($data);
+            return response()->json(['success' => true, 'data' => $result]);
 
-        return response()->json($this->galleryService->create($data));
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'خطأ: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function updateGallery(Request $request, $id)

@@ -24,6 +24,7 @@ use App\Models\GalleryImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -466,21 +467,14 @@ class AdminController extends Controller
                 $file = $request->file('image_file');
                 $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 
-                // تجربة مسار الرفع (نحاول public_path أولاً)
-                $destPath = public_path('uploads/gallery');
-                
-                // لو المجلد مش موجود، نحاول ننشئه
-                if (!file_exists($destPath)) {
-                    if (!mkdir($destPath, 0755, true)) {
-                        throw new \Exception("فشل إنشاء مجلد الرفع في: " . $destPath . ". يرجى إنشاؤه يدوياً عبر File Manager");
-                    }
-                }
+                // الرفع باستخدام Storage disk 'public'
+                $path = $file->storeAs('uploads/gallery', $imageName, 'public');
 
-                if ($file->move($destPath, $imageName)) {
-                    $data['url'] = '/uploads/gallery/' . $imageName;
+                if ($path) {
+                    $data['url'] = '/storage/uploads/gallery/' . $imageName;
                     $data['icon'] = null;
                 } else {
-                    throw new \Exception("فشل نقل الملف. تأكد من صلاحيات المجلد 755");
+                    throw new \Exception("فشل رفع الملف إلى الـ Storage");
                 }
             }
 
@@ -511,18 +505,13 @@ class AdminController extends Controller
                 $file = $request->file('image_file');
                 $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 
-                $destPath = public_path('uploads/gallery');
-                if (!file_exists($destPath)) {
-                    if (!mkdir($destPath, 0755, true)) {
-                        throw new \Exception("فشل إنشاء المجلد. يرجى إنشاؤه يدوياً: public/uploads/gallery");
-                    }
-                }
+                $path = $file->storeAs('uploads/gallery', $imageName, 'public');
 
-                if ($file->move($destPath, $imageName)) {
-                    $data['url'] = '/uploads/gallery/' . $imageName;
+                if ($path) {
+                    $data['url'] = '/storage/uploads/gallery/' . $imageName;
                     $data['icon'] = null;
                 } else {
-                    throw new \Exception("فشل في تحديث الصورة. تأكد من الصلاحيات");
+                    throw new \Exception("فشل في تحديث الصورة في الـ Storage");
                 }
             } elseif ($request->filled('icon')) {
                 $data['url'] = null;

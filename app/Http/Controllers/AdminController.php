@@ -452,13 +452,22 @@ class AdminController extends Controller
 
     public function storeGallery(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'title' => 'nullable|string',
-            'url' => 'nullable|string',
             'icon' => 'nullable|string',
             'category' => 'nullable|string',
-            'is_active' => 'boolean'
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
+
+        $data = $request->only(['title', 'icon', 'category']);
+
+        if ($request->hasFile('image_file')) {
+            $imageName = time() . '_' . uniqid() . '.' . $request->image_file->extension();
+            $request->image_file->move(public_path('uploads/gallery'), $imageName);
+            $data['url'] = '/uploads/gallery/' . $imageName;
+            $data['icon'] = null; // نلغي الأيقونة لو فيه صورة
+        }
+
         return response()->json($this->galleryService->create($data));
     }
 

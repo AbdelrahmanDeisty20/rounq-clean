@@ -38,15 +38,23 @@
             <h3><i class="fas fa-images"></i> إضافة صورة جديدة</h3>
             <button class="admin-modal-close" onclick="closeGalleryModal()">&times;</button>
         </div>
-        <form id="galleryForm" onsubmit="handleGallerySubmit(event)">
+        <form id="galleryForm" onsubmit="handleGallerySubmit(event)" enctype="multipart/form-data">
             <div class="admin-modal-body">
                 <div class="form-group-admin">
                     <label>عنوان الخدمة (مثلاً: تنظيف فلل)</label>
                     <input type="text" name="title" id="galleryTitle" required placeholder="اكتب عنوان الخدمة هنا">
                 </div>
                 <div class="form-group-admin">
+                    <label>نوع العرض</label>
+                    <select id="galleryType" onchange="toggleGalleryInputs()" style="padding: 10px; border-radius: 8px; border: 1.5px solid var(--gray-200); width: 100%;">
+                        <option value="icon">أيقونة رمزية (الوضع الحالي)</option>
+                        <option value="image">صورة حقيقية (من جهازك)</option>
+                    </select>
+                </div>
+
+                <div id="iconInputGroup" class="form-group-admin">
                     <label>اختر الأيقونة المعبرة</label>
-                    <select name="icon" id="galleryIcon" required style="font-family: 'Font Awesome 5 Free', 'Tajawal', sans-serif; font-weight: 900; font-size: 16px; padding: 10px;">
+                    <select name="icon" id="galleryIcon" style="font-family: 'Font Awesome 5 Free', 'Tajawal', sans-serif; font-weight: 900; font-size: 16px; padding: 10px;">
                         <optgroup label="أيقونات المساعدة واليد">
                             <option value="fa-hands-helping">🤝 - يد المساعدة</option>
                             <option value="fa-hand-holding-heart">🤟 - رعاية واهتمام</option>
@@ -76,7 +84,13 @@
                         </optgroup>
                     </select>
                 </div>
-                <input type="hidden" name="url" value="">
+
+                <div id="imageInputGroup" class="form-group-admin" style="display:none">
+                    <label>اختر صورة من جهازك</label>
+                    <input type="file" name="image_file" id="galleryImageFile" accept="image/*" style="padding: 8px;">
+                    <small style="color:var(--gray-500); font-size:11px; margin-top:5px; display:block">يفضل استخدام صور ذات أبعاد متناسقة (مربعة)</small>
+                </div>
+                <input type="hidden" name="url" id="galleryUrl">
                 <div class="form-group-admin">
                     <label>القسم</label>
                     <select name="category" id="galleryCategory">
@@ -99,7 +113,22 @@
 <script>
 window.openGalleryModal = function() {
     $('#galleryForm')[0].reset();
+    $('#galleryType').val('icon');
+    toggleGalleryInputs();
     $('#galleryModal').addClass('open');
+}
+
+window.toggleGalleryInputs = function() {
+    const type = $('#galleryType').val();
+    if(type === 'icon') {
+        $('#iconInputGroup').show();
+        $('#imageInputGroup').hide();
+        $('#galleryUrl').val('');
+    } else {
+        $('#iconInputGroup').hide();
+        $('#imageInputGroup').show();
+        $('#galleryIcon').val('');
+    }
 }
 
 window.closeGalleryModal = function() {
@@ -108,28 +137,34 @@ window.closeGalleryModal = function() {
 
 window.handleGallerySubmit = function(e) {
     e.preventDefault();
-    const form = $('#galleryForm');
-    const formData = form.serialize();
+    const form = $('#galleryForm')[0];
+    const formData = new FormData(form);
 
-    if(!$('#galleryUrl').val() && !$('#galleryIcon').val()) {
-        showNotif('يرجى رفع صورة أو اختيار أيقونة', 'error');
+    const type = $('#galleryType').val();
+    if(type === 'icon' && !$('#galleryIcon').val()) {
+        showNotif('يرجى اختيار أيقونة', 'error');
+        return;
+    }
+    if(type === 'image' && !$('#galleryImageFile').val()) {
+        showNotif('يرجى اختيار صورة من جهازك', 'error');
         return;
     }
 
-    const btn = form.find('button[type="submit"]');
-    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...');
+    const btn = $(form).find('button[type="submit"]');
+    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> جاري الرفع...');
 
     $.ajax({
         url: '/admin/gallery',
         method: 'POST',
         data: formData,
-        timeout: 15000,
+        processData: false, // مهم جداً لرفع الصور
+        contentType: false, // مهم جداً لرفع الصور
         success: function() {
             showNotif('تمت إضافة الصورة بنجاح ✅');
             setTimeout(() => location.reload(), 1000);
         },
-        error: function() {
-            showNotif('حدث خطأ أثناء الإضافة', 'error');
+        error: function(xhr) {
+            showNotif(xhr.responseJSON?.message || 'حدث خطأ أثناء الرفع', 'error');
             btn.prop('disabled', false).text('إضافة للصالة');
         }
     });

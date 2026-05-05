@@ -15,7 +15,6 @@
                 <thead>
                     <tr>
                         <th>العرض</th>
-                        <th>السعر</th>
                         <th>الحالة</th>
                         <th>العمليات</th>
                     </tr>
@@ -27,10 +26,7 @@
                             <strong>{{ $offer->title }}</strong>
                             @if($offer->is_featured) <span class="status-badge status-progress">مميز</span> @endif
                         </td>
-                        <td>
-                            <span class="text-green">{{ $offer->price }} ر.س</span>
-                            @if($offer->old_price) <small style="text-decoration:line-through; color:var(--gray-500)">{{ $offer->old_price }}</small> @endif
-                        </td>
+
                         <td>
                             @if($offer->is_active)
                                 <span class="status-badge status-done">نشط</span>
@@ -70,14 +66,7 @@
                         <label>عنوان العرض</label>
                         <input type="text" name="title" id="offerTitle" required placeholder="مثال: الباقة الذهبية">
                     </div>
-                    <div class="form-group-admin">
-                        <label>السعر الحالي</label>
-                        <input type="number" name="price" id="offerPrice" required placeholder="199">
-                    </div>
-                    <div class="form-group-admin">
-                        <label>السعر القديم (اختياري)</label>
-                        <input type="number" name="old_price" id="offerOldPrice" placeholder="299">
-                    </div>
+
                     <div class="form-group-admin">
                         <label>المميزات (كل ميزة في سطر)</label>
                         <textarea name="features" id="offerFeatures" required rows="4" placeholder="تنظيف 3 غرف&#10;تنظيف مطبخ&#10;..."></textarea>
@@ -117,8 +106,7 @@ window.closeOfferModal = function() {
 window.editOffer = function(offer) {
     $('#offerId').val(offer.id);
     $('#offerTitle').val(offer.title);
-    $('#offerPrice').val(offer.price);
-    $('#offerOldPrice').val(offer.old_price);
+
     $('#offerFeatures').val(offer.features);
     $('#offerIsFeatured').prop('checked', offer.is_featured);
     $('#offerIsActive').prop('checked', offer.is_active);

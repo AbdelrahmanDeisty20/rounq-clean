@@ -11,11 +11,6 @@
         @if($offer->is_featured) <div class="offer-badge">الأكثر طلباً</div> @endif
         <div class="offer-header">
           <h3>{{ $offer->title }}</h3>
-          <div class="offer-price">
-            @if($offer->old_price) <span class="old" style="text-decoration: line-through; font-size: 16px; color: var(--gray-500); display: block">{{ $offer->old_price }} ر.س</span> @endif
-            <span class="new">{{ $offer->price }}</span>
-            <span class="unit">ر.س</span>
-          </div>
         </div>
         <div class="offer-body">
           <ul class="offer-features" style="list-style: none; padding: 0; margin-bottom: 25px; text-align: right">

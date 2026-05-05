@@ -13,10 +13,11 @@
 </head>
 <body>
     <div class="admin-wrap">
-        <aside class="admin-sidebar">
+        <aside class="admin-sidebar" id="adminSidebar">
             <div class="admin-logo">
                 <h2><i class="fas fa-star" style="color:var(--gold)"></i> لوحة التحكم</h2>
                 <span>الأسطورة رونق قلب الخليج</span>
+                <button class="close-sidebar-admin" onclick="toggleAdminSidebar()"><i class="fas fa-times"></i></button>
             </div>
             <nav class="admin-nav">
                 <div class="admin-nav-section">الرئيسية</div>
@@ -110,6 +111,7 @@
 
         <main class="admin-main">
             <header class="admin-header">
+                <button class="mobile-toggle-admin" onclick="toggleAdminSidebar()"><i class="fas fa-bars"></i></button>
                 <h1>@yield('title', 'لوحة التحكم')</h1>
                 <div class="admin-header-actions">
                     <a href="{{ route('site.home') }}" target="_blank" class="admin-btn secondary" style="padding: 8px 15px; font-size: 13px;">
@@ -129,6 +131,9 @@
     </div>
 
     <script>
+        function toggleAdminSidebar() {
+            $('#adminSidebar').toggleClass('open');
+        }
         $(document).ready(function() {
             // CSRF Setup for AJAX
             $.ajaxSetup({

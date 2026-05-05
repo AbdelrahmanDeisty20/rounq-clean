@@ -34,7 +34,7 @@
     </div>
 </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+<div class="dashboard-grid">
     <div class="admin-card">
         <div class="admin-card-header">
             <h3>آخر طلبات الخدمة</h3>
@@ -42,24 +42,26 @@
         </div>
         <div class="admin-card-body">
             @if($bookings->count() > 0)
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>الاسم</th>
-                            <th>الخدمة</th>
-                            <th>التاريخ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($bookings as $booking)
-                        <tr>
-                            <td>{{ $booking->name }}</td>
-                            <td>{{ $booking->service_type }}</td>
-                            <td>{{ $booking->created_at->format('Y-m-d') }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="admin-table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>الخدمة</th>
+                                <th>التاريخ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($bookings as $booking)
+                            <tr>
+                                <td>{{ $booking->name }}</td>
+                                <td>{{ $booking->service }}</td>
+                                <td>{{ $booking->created_at->format('Y-m-d') }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @else
                 <div style="text-align:center;padding:30px;color:var(--gray-500)">لا توجد طلبات بعد</div>
             @endif
@@ -72,24 +74,26 @@
         </div>
         <div class="admin-card-body">
             @if($messages->count() > 0)
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>الاسم</th>
-                            <th>الموضوع</th>
-                            <th>التاريخ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($messages as $msg)
-                        <tr>
-                            <td>{{ $msg->name }}</td>
-                            <td>{{ $msg->subject }}</td>
-                            <td>{{ $msg->created_at->format('Y-m-d') }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="admin-table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>الموضوع</th>
+                                <th>التاريخ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($messages as $msg)
+                            <tr>
+                                <td>{{ $msg->name }}</td>
+                                <td>{{ $msg->subject }}</td>
+                                <td>{{ $msg->created_at->format('Y-m-d') }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @else
                 <div style="text-align:center;padding:30px;color:var(--gray-500)">لا توجد رسائل بعد</div>
             @endif

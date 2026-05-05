@@ -8,14 +8,12 @@
     
     <div class="gallery-grid">
       @foreach($gallery as $img)
-      <div class="gallery-item">
+      <div class="gallery-item @if(!$img->url) img-placeholder @endif">
         @if($img->url)
           <img src="{{ $img->url }}" alt="{{ $img->title ?? 'Gallery Image' }}">
         @else
-          <div class="img-placeholder">
-            <i class="fas {{ $img->icon ?? 'fa-home' }}"></i>
-            <span>{{ $img->title ?? 'تنظيف شامل' }}</span>
-          </div>
+          <i class="fas {{ $img->icon ?? 'fa-home' }}"></i>
+          <span>{{ $img->title ?? 'تنظيف شامل' }}</span>
         @endif
         
         <div class="gallery-overlay">

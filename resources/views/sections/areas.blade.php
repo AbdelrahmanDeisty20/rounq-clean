@@ -5,7 +5,7 @@
       <h2>نخدم <span class="text-gold">جميع أنحاء القصيم</span></h2>
       <p>نصلك أينما كنت في منطقة القصيم</p>
     </div>
-    <div class="areas-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px">
+    <div class="areas-grid">
       @php
         $areas = [
           ['icon' => '🏙️', 'name' => 'بريدة', 'desc' => 'العاصمة الرئيسية'],
@@ -20,10 +20,10 @@
         ];
       @endphp
       @foreach($areas as $area)
-        <div class="area-card" style="background: white; padding: 25px; border-radius: 20px; text-align: center; box-shadow: var(--shadow); transition: var(--transition)">
-          <div class="area-icon" style="font-size: 32px; margin-bottom: 10px">{{ $area['icon'] }}</div>
-          <h3 style="font-size: 16px; color: var(--primary); margin-bottom: 5px">{{ $area['name'] }}</h3>
-          <p style="font-size: 12px; color: var(--gray-500)">{{ $area['desc'] }}</p>
+        <div class="area-card">
+          <div class="area-icon">{{ $area['icon'] }}</div>
+          <h3>{{ $area['name'] }}</h3>
+          <p>{{ $area['desc'] }}</p>
         </div>
       @endforeach
     </div>

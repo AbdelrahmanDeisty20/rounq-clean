@@ -93,3 +93,15 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/seo', [AdminController::class, 'updateSeoSettings']);
     Route::post('/upload-image', [AdminController::class, 'uploadImage']);
 });
+
+// كشاف للمسارات (عشان نعرف الصور بتروح فين بالظبط على Hostinger)
+Route::get('/check-files', function() {
+    $path = public_path('uploads/gallery');
+    return [
+        'public_path' => public_path(),
+        'gallery_path' => $path,
+        'exists' => file_exists($path),
+        'is_writable' => is_writable($path),
+        'files' => file_exists($path) ? array_diff(scandir($path), ['.', '..']) : 'Folder not found'
+    ];
+});

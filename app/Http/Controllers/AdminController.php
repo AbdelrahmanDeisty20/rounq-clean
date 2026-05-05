@@ -511,17 +511,36 @@ class AdminController extends Controller
 
     public function uploadImage(Request $request)
     {
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+        try {
+            $request->validate([
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
+            ]);
 
-        if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();  
-            $request->image->move(public_path('uploads'), $imageName);
-            return response()->json(['url' => '/uploads/'.$imageName]);
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                
+                $destPath = base_path('uploads/home');
+                
+                if (!file_exists($destPath)) {
+                    @mkdir($destPath, 0755, true);
+                }
+
+                if (!is_writable($destPath)) {
+                    throw new \Exception("المجلد غير قابل للكتابة: " . $destPath);
+                }
+
+                if ($file->move($destPath, $imageName)) {
+                    return response()->json(['url' => '/uploads/home/' . $imageName]);
+                } else {
+                    throw new \Exception("فشل نقل الملف.");
+                }
+            }
+
+            return response()->json(['error' => 'No image uploaded'], 400);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
-
-        return response()->json(['error' => 'No image uploaded'], 400);
     }
 
     // Gallery

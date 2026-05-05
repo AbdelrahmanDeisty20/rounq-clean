@@ -137,9 +137,14 @@ if (!homeSettings || Array.isArray(homeSettings)) homeSettings = {};
 function uploadImage(e, targetId) {
     const file = e.target.files[0];
     if (!file) return;
+    
+    const container = $(`#hm_${targetId}_preview`);
+    container.css('opacity', '0.5');
+    
     const formData = new FormData();
     formData.append('image', file);
     formData.append('_token', '{{ csrf_token() }}');
+    
     $.ajax({
         url: '/admin/upload-image',
         method: 'POST',
@@ -147,8 +152,19 @@ function uploadImage(e, targetId) {
         processData: false,
         contentType: false,
         success: function(res) {
-            $(`#hm_${targetId}`).val(res.url);
-            $(`#hm_${targetId}_preview`).html(`<img src="${res.url}" class="img-preview-small">`);
+            container.css('opacity', '1');
+            if(res.url) {
+                $(`#hm_${targetId}`).val(res.url);
+                container.html(`<img src="${res.url}" class="img-preview-small">`);
+                showNotif('تم رفع الصورة بنجاح ✅');
+            } else {
+                showNotif('فشل رفع الصورة: ' + (res.message || 'خطأ غير معروف'), 'error');
+            }
+        },
+        error: function(xhr) {
+            container.css('opacity', '1');
+            const msg = xhr.responseJSON ? xhr.responseJSON.message : 'حدث خطأ في السيرفر';
+            showNotif('فشل الرفع: ' + msg, 'error');
         }
     });
 }

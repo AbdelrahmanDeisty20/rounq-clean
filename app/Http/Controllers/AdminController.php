@@ -355,12 +355,52 @@ class AdminController extends Controller
 
     public function storeBlog(BlogRequest $request)
     {
-        return response()->json($this->blogService->create($request->validated()));
+        try {
+            $data = $request->validated();
+
+            if ($request->hasFile('image_file')) {
+                $file = $request->file('image_file');
+                $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $destPath = base_path('uploads/blogs');
+                
+                if (!file_exists($destPath)) {
+                    @mkdir($destPath, 0755, true);
+                }
+
+                if ($file->move($destPath, $imageName)) {
+                    $data['image'] = '/uploads/blogs/' . $imageName;
+                }
+            }
+
+            return response()->json($this->blogService->create($data));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
     public function updateBlog(BlogRequest $request, $id)
     {
-        return response()->json($this->blogService->update($id, $request->validated()));
+        try {
+            $data = $request->validated();
+
+            if ($request->hasFile('image_file')) {
+                $file = $request->file('image_file');
+                $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $destPath = base_path('uploads/blogs');
+                
+                if (!file_exists($destPath)) {
+                    @mkdir($destPath, 0755, true);
+                }
+
+                if ($file->move($destPath, $imageName)) {
+                    $data['image'] = '/uploads/blogs/' . $imageName;
+                }
+            }
+
+            return response()->json($this->blogService->update($id, $data));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
     public function deleteBlog($id)

@@ -53,7 +53,7 @@
             <h3><i class="fas fa-blog"></i> <span id="blogModalTitle">إضافة مقال جديد</span></h3>
             <button class="admin-modal-close" onclick="closeBlogModal()">&times;</button>
         </div>
-        <form id="blogForm" onsubmit="handleBlogSubmit(event)">
+        <form id="blogForm" onsubmit="handleBlogSubmit(event)" enctype="multipart/form-data">
             <input type="hidden" name="id" id="blogId">
             <div class="admin-modal-body">
                 <div class="form-group-admin">
@@ -67,11 +67,8 @@
                             <div style="display:flex; align-items:center; justify-content:center; height:100%; color:#888; font-size:12px">لا توجد صورة</div>
                         </div>
                         <div style="flex:1">
-                            <input type="file" accept="image/*" onchange="uploadImage(event, url => { 
-                                $('#blogImage').val(url); 
-                                $('#blogPreview').html(`<img src='${url}' style='width:100%; height:100%; object-fit:cover'>`);
-                            })">
-                            <input type="hidden" name="image" id="blogImage" required>
+                            <input type="file" name="image_file" id="blogImageFile" accept="image/*" onchange="previewBlogImage(event)">
+                            <input type="hidden" name="image" id="blogImage">
                         </div>
                     </div>
                 </div>
@@ -98,9 +95,20 @@ window.openBlogModal = function() {
     $('#blogForm')[0].reset();
     $('#blogId').val('');
     $('#blogImage').val('');
+    $('#blogImageFile').val('');
     $('#blogPreview').html('<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#888; font-size:12px">لا توجد صورة</div>');
     $('#blogModalTitle').text('إضافة مقال جديد');
     $('#blogModal').addClass('open');
+}
+
+window.previewBlogImage = function(event) {
+    if(event.target.files && event.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $('#blogPreview').html(`<img src='${e.target.result}' style='width:100%; height:100%; object-fit:cover'>`);
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
 }
 
 window.closeBlogModal = function() {
@@ -108,9 +116,11 @@ window.closeBlogModal = function() {
 }
 
 window.editBlog = function(blog) {
+    $('#blogForm')[0].reset();
     $('#blogId').val(blog.id);
     $('#blogTitle').val(blog.title);
     $('#blogImage').val(blog.image);
+    $('#blogImageFile').val('');
     $('#blogPreview').html(`<img src='${blog.image}' style='width:100%; height:100%; object-fit:cover'>`);
     $('#blogContent').val(blog.content);
     $('#blogIsActive').prop('checked', blog.is_active);
@@ -120,40 +130,36 @@ window.editBlog = function(blog) {
 
 window.handleBlogSubmit = function(e) {
     e.preventDefault();
-    const form = $('#blogForm');
+    const form = $('#blogForm')[0];
+    const formData = new FormData(form);
     const id = $('#blogId').val();
     const url = id ? `/admin/blogs/${id}` : '/admin/blogs';
     
-    if(!$('#blogImage').val()) {
-        showNotif('يرجى رفع صورة للمقال أولاً', 'error');
+    // في حالة الإضافة الجديدة نطلب صورة
+    if(!id && !$('#blogImageFile').val()) {
+        showNotif('يرجى اختيار صورة للمقال أولاً', 'error');
         return;
     }
 
-    const formData = form.serializeArray();
-    const cleanData = {};
-    formData.forEach(item => {
-        if(item.name !== 'is_active') cleanData[item.name] = item.value;
-    });
-    cleanData['is_active'] = $('#blogIsActive').is(':checked') ? 1 : 0;
-
-    const btn = form.find('button[type="submit"]');
+    const btn = $(form).find('button[type="submit"]');
     btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...');
 
     $.ajax({
         url: url,
         method: 'POST',
-        data: cleanData,
-        timeout: 15000,
+        data: formData,
+        processData: false,
+        contentType: false,
         success: function() {
             showNotif('تم حفظ المقال بنجاح ✅');
             setTimeout(() => location.reload(), 1000);
         },
         error: function(xhr) {
             if(xhr.status === 422 && xhr.responseJSON) {
-                showRemoteErrors(xhr.responseJSON.errors, form);
+                showRemoteErrors(xhr.responseJSON.errors, $(form));
                 showNotif('يرجى التحقق من البيانات', 'error');
             } else {
-                showNotif('حدث خطأ أثناء الحفظ', 'error');
+                showNotif(xhr.responseJSON?.message || 'حدث خطأ أثناء الحفظ', 'error');
             }
             btn.prop('disabled', false).text('حفظ المقال');
         }

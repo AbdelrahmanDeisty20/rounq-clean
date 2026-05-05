@@ -16,6 +16,7 @@ class BlogRequest extends FormRequest
             'summary' => 'nullable|string|max:500',
             'content' => 'required|string',
             'image' => 'nullable|string',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
             'is_active' => 'boolean'
         ];
     }

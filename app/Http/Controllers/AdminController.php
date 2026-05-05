@@ -462,8 +462,13 @@ class AdminController extends Controller
         $data = $request->only(['title', 'icon', 'category']);
 
         if ($request->hasFile('image_file')) {
+            $destPath = public_path('uploads/gallery');
+            if (!file_exists($destPath)) {
+                mkdir($destPath, 0755, true);
+            }
+
             $imageName = time() . '_' . uniqid() . '.' . $request->image_file->extension();
-            $request->image_file->move(public_path('uploads/gallery'), $imageName);
+            $request->image_file->move($destPath, $imageName);
             $data['url'] = '/uploads/gallery/' . $imageName;
             $data['icon'] = null; // نلغي الأيقونة لو فيه صورة
         }
@@ -483,8 +488,13 @@ class AdminController extends Controller
         $data = $request->only(['title', 'icon', 'category']);
 
         if ($request->hasFile('image_file')) {
+            $destPath = public_path('uploads/gallery');
+            if (!file_exists($destPath)) {
+                mkdir($destPath, 0755, true);
+            }
+
             $imageName = time() . '_' . uniqid() . '.' . $request->image_file->extension();
-            $request->image_file->move(public_path('uploads/gallery'), $imageName);
+            $request->image_file->move($destPath, $imageName);
             $data['url'] = '/uploads/gallery/' . $imageName;
             $data['icon'] = null;
         } elseif ($request->filled('icon')) {

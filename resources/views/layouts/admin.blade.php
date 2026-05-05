@@ -8,17 +8,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ time() }}">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
     <div class="admin-wrap">
         <aside class="admin-sidebar" id="adminSidebar">
-            <div class="admin-logo">
-                <h2><i class="fas fa-star" style="color:var(--gold)"></i> لوحة التحكم</h2>
-                <span>الأسطورة رونق قلب الخليج</span>
-                <button class="close-sidebar-admin" onclick="toggleAdminSidebar()"><i class="fas fa-times"></i></button>
-            </div>
+        <div class="admin-logo">
+            <h2><i class="fas fa-star" style="color:var(--gold)"></i> لوحة التحكم</h2>
+            <span>الأسطورة رونق قلب الخليج</span>
+        </div>
             <nav class="admin-nav">
                 <div class="admin-nav-section">الرئيسية</div>
                 <a href="{{ route('admin.dashboard') }}" class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
@@ -134,21 +133,27 @@
 
     <script>
         function toggleAdminSidebar() {
-            const sidebar = $('#adminSidebar');
-            const backdrop = $('#sidebarBackdrop');
-            sidebar.toggleClass('open');
-            if (sidebar.hasClass('open')) {
-                backdrop.addClass('show');
+            const sidebar = document.getElementById('adminSidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            
+            if (sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                backdrop.classList.remove('show');
             } else {
-                backdrop.removeClass('show');
+                sidebar.classList.add('open');
+                backdrop.classList.add('show');
             }
         }
 
         $(document).ready(function() {
             // Close sidebar when clicking backdrop
             $('#sidebarBackdrop').on('click', function() {
-                $('#adminSidebar').removeClass('open');
-                $(this).removeClass('show');
+                toggleAdminSidebar();
+            });
+
+            // Close sidebar when clicking the close button inside it
+            $('.close-sidebar-admin').on('click', function() {
+                toggleAdminSidebar();
             });
 
             // CSRF Setup for AJAX

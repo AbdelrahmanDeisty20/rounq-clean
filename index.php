@@ -2,7 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-die('test');
+// die('test');
 
 define('LARAVEL_START', microtime(true));
 

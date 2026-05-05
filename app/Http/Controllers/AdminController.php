@@ -466,18 +466,21 @@ class AdminController extends Controller
                 $file = $request->file('image_file');
                 $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 
-                // تحديد المسار ومحاولة إنشائه
+                // تجربة مسار الرفع (نحاول public_path أولاً)
                 $destPath = public_path('uploads/gallery');
+                
+                // لو المجلد مش موجود، نحاول ننشئه
                 if (!file_exists($destPath)) {
-                    @mkdir($destPath, 0755, true);
+                    if (!mkdir($destPath, 0755, true)) {
+                        throw new \Exception("فشل إنشاء مجلد الرفع في: " . $destPath . ". يرجى إنشاؤه يدوياً عبر File Manager");
+                    }
                 }
 
-                // محاولة نقل الملف
                 if ($file->move($destPath, $imageName)) {
                     $data['url'] = '/uploads/gallery/' . $imageName;
                     $data['icon'] = null;
                 } else {
-                    return response()->json(['success' => false, 'message' => 'فشل في نقل الملف إلى المجلد المستهدف'], 500);
+                    throw new \Exception("فشل نقل الملف. تأكد من صلاحيات المجلد 755");
                 }
             }
 
@@ -487,37 +490,53 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false, 
-                'message' => 'خطأ: ' . $e->getMessage()
+                'message' => $e->getMessage()
             ], 500);
         }
     }
 
     public function updateGallery(Request $request, $id)
     {
-        $request->validate([
-            'title' => 'nullable|string',
-            'icon' => 'nullable|string',
-            'category' => 'nullable|string',
-            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
-        ]);
+        try {
+            $request->validate([
+                'title' => 'nullable|string',
+                'icon' => 'nullable|string',
+                'category' => 'nullable|string',
+                'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            ]);
 
-        $data = $request->only(['title', 'icon', 'category']);
+            $data = $request->only(['title', 'icon', 'category']);
 
-        if ($request->hasFile('image_file')) {
-            $destPath = public_path('uploads/gallery');
-            if (!file_exists($destPath)) {
-                mkdir($destPath, 0755, true);
+            if ($request->hasFile('image_file')) {
+                $file = $request->file('image_file');
+                $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                
+                $destPath = public_path('uploads/gallery');
+                if (!file_exists($destPath)) {
+                    if (!mkdir($destPath, 0755, true)) {
+                        throw new \Exception("فشل إنشاء المجلد. يرجى إنشاؤه يدوياً: public/uploads/gallery");
+                    }
+                }
+
+                if ($file->move($destPath, $imageName)) {
+                    $data['url'] = '/uploads/gallery/' . $imageName;
+                    $data['icon'] = null;
+                } else {
+                    throw new \Exception("فشل في تحديث الصورة. تأكد من الصلاحيات");
+                }
+            } elseif ($request->filled('icon')) {
+                $data['url'] = null;
             }
 
-            $imageName = time() . '_' . uniqid() . '.' . $request->image_file->extension();
-            $request->image_file->move($destPath, $imageName);
-            $data['url'] = '/uploads/gallery/' . $imageName;
-            $data['icon'] = null;
-        } elseif ($request->filled('icon')) {
-            $data['url'] = null; // نلغي الصورة لو اختار أيقونة
-        }
+            $result = $this->galleryService->update($id, $data);
+            return response()->json(['success' => true, 'data' => $result]);
 
-        return response()->json($this->galleryService->update($id, $data));
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false, 
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function deleteGallery($id)

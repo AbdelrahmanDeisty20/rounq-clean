@@ -467,15 +467,24 @@ class AdminController extends Controller
                 $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 
                 $destPath = public_path('uploads/gallery');
+                
+                // فحص وجود المجلد ومحاولة إنشائه
                 if (!file_exists($destPath)) {
-                    @mkdir($destPath, 0755, true);
+                    if (!@mkdir($destPath, 0755, true)) {
+                        throw new \Exception("المجلد غير موجود وفشلنا في إنشائه تلقائياً. يرجى إنشاء مجلد 'public/uploads/gallery' يدوياً.");
+                    }
+                }
+
+                // فحص صلاحية الكتابة
+                if (!is_writable($destPath)) {
+                    throw new \Exception("المجلد موجود ولكن لا نملك صلاحية الكتابة فيه. يرجى تغيير صلاحيات مجلد 'uploads/gallery' إلى 755 أو 777.");
                 }
 
                 if ($file->move($destPath, $imageName)) {
                     $data['url'] = '/uploads/gallery/' . $imageName;
                     $data['icon'] = null;
                 } else {
-                    throw new \Exception("فشل في رفع الملف. تأكد من وجود مجلد public/uploads/gallery");
+                    throw new \Exception("فشل نقل الملف. قد تكون مشكلة في حجم الملف أو صلاحيات السيرفر.");
                 }
             }
 

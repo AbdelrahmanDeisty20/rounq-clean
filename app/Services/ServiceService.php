@@ -13,7 +13,7 @@ class ServiceService
 
     public function getAll()
     {
-        return Service::all();
+        return Service::latest()->paginate(10);
     }
 
     public function getById($id)

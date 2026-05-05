@@ -10,37 +10,42 @@
         <button class="admin-btn primary" onclick="openServiceModal()"><i class="fas fa-plus"></i> إضافة خدمة جديدة</button>
     </div>
     <div class="admin-card-body">
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>الأيقونة</th>
-                    <th>اسم الخدمة</th>
-                    <th>الحالة</th>
-                    <th>العمليات</th>
-                </tr>
-            </thead>
-            <tbody id="servicesTableBody">
-                @foreach($services as $service)
-                <tr data-id="{{ $service->id }}">
-                    <td><i class="fas {{ $service->icon }} text-gold"></i></td>
-                    <td>{{ $service->name }}</td>
-                    <td>
-                        @if($service->is_active)
-                            <span class="status-badge status-done">نشط</span>
-                        @else
-                            <span class="status-badge status-cancel">متوقف</span>
-                        @endif
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="action-btn edit" onclick="editService({{ json_encode($service) }})"><i class="fas fa-edit"></i></button>
-                            <button class="action-btn delete" onclick="deleteService({{ $service->id }})"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>الأيقونة</th>
+                        <th>اسم الخدمة</th>
+                        <th>الحالة</th>
+                        <th>العمليات</th>
+                    </tr>
+                </thead>
+                <tbody id="servicesTableBody">
+                    @foreach($services as $service)
+                    <tr data-id="{{ $service->id }}">
+                        <td><i class="fas {{ $service->icon }} text-gold"></i></td>
+                        <td>{{ $service->name }}</td>
+                        <td>
+                            @if($service->is_active)
+                                <span class="status-badge status-done">نشط</span>
+                            @else
+                                <span class="status-badge status-cancel">متوقف</span>
+                            @endif
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn edit" onclick="editService({{ json_encode($service) }})"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete" onclick="deleteService({{ $service->id }})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination-wrapper">
+            {{ $services->links() }}
+        </div>
     </div>
 </div>
 

@@ -25,6 +25,9 @@
             </div>
             @endforeach
         </div>
+        <div class="pagination-wrapper">
+            {{ $gallery->links() }}
+        </div>
     </div>
 </div>
 

@@ -8,7 +8,7 @@ class BookingService
 {
     public function getAll()
     {
-        return Booking::orderBy('created_at', 'desc')->get();
+        return Booking::orderBy('created_at', 'desc')->paginate(10);
     }
 
     public function getById($id)

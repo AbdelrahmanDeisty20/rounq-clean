@@ -10,43 +10,48 @@
         <button class="admin-btn primary" onclick="openOfferModal()"><i class="fas fa-plus"></i> إضافة عرض جديد</button>
     </div>
     <div class="admin-card-body">
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>العرض</th>
-                    <th>السعر</th>
-                    <th>الحالة</th>
-                    <th>العمليات</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($offers as $offer)
-                <tr data-id="{{ $offer->id }}">
-                    <td>
-                        <strong>{{ $offer->title }}</strong>
-                        @if($offer->is_featured) <span class="status-badge status-progress">مميز</span> @endif
-                    </td>
-                    <td>
-                        <span class="text-green">{{ $offer->price }} ر.س</span>
-                        @if($offer->old_price) <small style="text-decoration:line-through; color:var(--gray-500)">{{ $offer->old_price }}</small> @endif
-                    </td>
-                    <td>
-                        @if($offer->is_active)
-                            <span class="status-badge status-done">نشط</span>
-                        @else
-                            <span class="status-badge status-cancel">متوقف</span>
-                        @endif
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="action-btn edit" onclick="editOffer({{ json_encode($offer) }})"><i class="fas fa-edit"></i></button>
-                            <button class="action-btn delete" onclick="deleteOffer({{ $offer->id }})"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>العرض</th>
+                        <th>السعر</th>
+                        <th>الحالة</th>
+                        <th>العمليات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($offers as $offer)
+                    <tr data-id="{{ $offer->id }}">
+                        <td>
+                            <strong>{{ $offer->title }}</strong>
+                            @if($offer->is_featured) <span class="status-badge status-progress">مميز</span> @endif
+                        </td>
+                        <td>
+                            <span class="text-green">{{ $offer->price }} ر.س</span>
+                            @if($offer->old_price) <small style="text-decoration:line-through; color:var(--gray-500)">{{ $offer->old_price }}</small> @endif
+                        </td>
+                        <td>
+                            @if($offer->is_active)
+                                <span class="status-badge status-done">نشط</span>
+                            @else
+                                <span class="status-badge status-cancel">متوقف</span>
+                            @endif
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn edit" onclick="editOffer({{ json_encode($offer) }})"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete" onclick="deleteOffer({{ $offer->id }})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination-wrapper">
+            {{ $offers->links() }}
+        </div>
     </div>
 </div>
 

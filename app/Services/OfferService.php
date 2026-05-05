@@ -13,7 +13,7 @@ class OfferService
 
     public function getAll()
     {
-        return Offer::all();
+        return Offer::latest()->paginate(10);
     }
 
     public function getById($id)

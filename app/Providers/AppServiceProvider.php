@@ -7,6 +7,7 @@ use App\Models\Message;
 use App\Models\Setting;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useBootstrapFive();
         // Share settings and counts with admin layouts
         View::composer('layouts.admin', function ($view) {
             $settings = Setting::all()->pluck('value', 'key');

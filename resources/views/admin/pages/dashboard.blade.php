@@ -42,7 +42,7 @@
         </div>
         <div class="admin-card-body">
             @if($bookings->count() > 0)
-                <div class="admin-table-wrapper">
+                <div class="table-responsive">
                     <table class="admin-table">
                         <thead>
                             <tr>
@@ -74,7 +74,7 @@
         </div>
         <div class="admin-card-body">
             @if($messages->count() > 0)
-                <div class="admin-table-wrapper">
+                <div class="table-responsive">
                     <table class="admin-table">
                         <thead>
                             <tr>

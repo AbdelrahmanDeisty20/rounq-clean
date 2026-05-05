@@ -337,7 +337,16 @@ footer { background: var(--dark); color: white; padding: 60px 0 30px; }
     display: flex;
     flex-direction: column;
 }
-.admin-nav-section { padding: 15px 20px 10px; font-size: 12px; text-transform: uppercase; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 1px; }
+.admin-nav-section { 
+    padding: 20px 20px 8px; 
+    font-size: 13px; 
+    text-transform: uppercase; 
+    color: #38bdf8; /* لون أزرق سماوي واضح */
+    font-weight: 800; 
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+    margin-bottom: 5px;
+}
 .admin-nav a { display: flex; align-items: center; gap: 14px; padding: 16px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 16px; font-weight: 600; transition: var(--transition); width: 100%; }
 .admin-nav a:hover, .admin-nav a.active { color: white; background: rgba(255,255,255,0.08); border-right: 3px solid var(--gold); }
 .admin-nav a i { width: 24px; text-align: center; font-size: 18px; }
@@ -526,3 +535,219 @@ table.admin-table { width: 100%; border-collapse: separate; border-spacing: 0; f
 @media (max-width: 400px) {
     .stats-row { grid-template-columns: 1fr !important; }
 }
+
+/* ========== ADMIN TABLES & PAGINATION ========== */
+/* ========== ADMIN RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        right: -300px;
+        transition: 0.3s;
+        box-shadow: none;
+    }
+    .admin-sidebar.open {
+        right: 0;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+    }
+    .admin-main {
+        margin-right: 0 !important;
+    }
+    .sidebar-toggle {
+        display: flex !important;
+        order: 2;
+    }
+    .admin-header {
+        padding: 12px 15px;
+        height: auto;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: space-between;
+    }
+    .admin-header h2 {
+        font-size: 16px;
+        order: 1;
+        margin: 0;
+    }
+    .admin-header-btns {
+        order: 3;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+    }
+    .admin-header-btns .admin-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 8px;
+        font-size: 13px;
+    }
+    
+    .admin-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 15px;
+    }
+    .admin-card-header h3 {
+        font-size: 16px;
+    }
+    .admin-card-header .admin-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 24px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+    }
+    .admin-table {
+        min-width: 600px;
+    }
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    background: #f8fafc;
+    padding: 16px 20px;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 700;
+    color: #475569;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table td {
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #1e293b;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+/* Custom Pagination Styling - Modern Look */
+.pagination-wrapper {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+/* إخفاء نصوص الوصف الزائدة وإجبار الأرقام على الظهور */
+.pagination-wrapper .small.text-muted, 
+.pagination-wrapper nav div:first-child,
+.pagination-wrapper .hidden,
+.pagination-wrapper .d-none {
+    display: none !important;
+}
+
+.pagination-wrapper nav, 
+.pagination-wrapper nav div:last-child,
+.pagination-wrapper flex,
+.pagination-wrapper .flex-1 {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+.pagination {
+    display: flex !important;
+    visibility: visible !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    direction: ltr !important;
+}
+
+.page-item .page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 8px;
+    border-radius: 10px !important;
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* تعديلات للموبايل الصغير جداً */
+@media (max-width: 480px) {
+    .page-item .page-link {
+        min-width: 34px;
+        height: 34px;
+        font-size: 12px;
+    }
+    .pagination {
+        gap: 4px;
+    }
+}
+
+.page-item.active .page-link {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+.page-item:not(.active) .page-link:hover {
+    background: #f0f9ff;
+    color: #0ea5e9;
+    border-color: #0ea5e9;
+    transform: translateY(-2px);
+}
+
+.page-item.disabled .page-link {
+    background: #f8fafc;
+    color: #cbd5e1;
+    cursor: not-allowed;
+}
+
+.pagination svg {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* تباعد بسيط للمعرض مع الحفاظ على الشكل الأصلي */
+.gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* المسافة اللي طلبتها */
+    justify-content: flex-start;
+    padding: 10px 0;
+}
+
+.gallery-item {
+    transition: transform 0.2s;
+}
+
+.gallery-item:hover {
+    transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        gap: 10px;
+        justify-content: center;
+    }
+}
+
+
+

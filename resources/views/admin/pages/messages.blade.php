@@ -9,42 +9,47 @@
         <h3>الرسائل الواردة</h3>
     </div>
     <div class="admin-card-body">
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>المرسل</th>
-                    <th>الموضوع</th>
-                    <th>التاريخ</th>
-                    <th>الحالة</th>
-                    <th>العمليات</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($messages as $msg)
-                <tr>
-                    <td>
-                        <strong>{{ $msg->name }}</strong>
-                        <div style="font-size:12px;color:var(--gray-500)">{{ $msg->email }}</div>
-                    </td>
-                    <td>{{ $msg->subject }}</td>
-                    <td>{{ $msg->created_at->format('Y-m-d') }}</td>
-                    <td>
-                        @if($msg->is_replied)
-                            <span class="status-badge status-done">تم الرد</span>
-                        @else
-                            <span class="status-badge status-progress">جديد</span>
-                        @endif
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="action-btn edit" onclick="viewMessage({{ json_encode($msg) }})"><i class="fas fa-eye"></i></button>
-                            <button class="action-btn delete" onclick="deleteMessage({{ $msg->id }})"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>المرسل</th>
+                        <th>الموضوع</th>
+                        <th>التاريخ</th>
+                        <th>الحالة</th>
+                        <th>العمليات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($messages as $msg)
+                    <tr>
+                        <td>
+                            <strong>{{ $msg->name }}</strong>
+                            <div style="font-size:12px;color:var(--gray-500)">{{ $msg->email }}</div>
+                        </td>
+                        <td>{{ $msg->subject }}</td>
+                        <td>{{ $msg->created_at->format('Y-m-d') }}</td>
+                        <td>
+                            @if($msg->is_replied)
+                                <span class="status-badge status-done">تم الرد</span>
+                            @else
+                                <span class="status-badge status-progress">جديد</span>
+                            @endif
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn edit" onclick="viewMessage({{ json_encode($msg) }})"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn delete" onclick="deleteMessage({{ $msg->id }})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination-wrapper">
+            {{ $messages->links() }}
+        </div>
     </div>
 </div>
 

@@ -8,7 +8,7 @@ class MessageService
 {
     public function getAll()
     {
-        return Message::orderBy('created_at', 'desc')->get();
+        return Message::orderBy('created_at', 'desc')->paginate(10);
     }
 
     public function create(array $data)

@@ -8,7 +8,7 @@ class GalleryService
 {
     public function getAll()
     {
-        return GalleryImage::all();
+        return GalleryImage::latest()->paginate(10);
     }
 
     public function create(array $data)

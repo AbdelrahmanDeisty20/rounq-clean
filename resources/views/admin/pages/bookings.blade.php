@@ -9,7 +9,7 @@
         <h3>الطلبات الواردة</h3>
     </div>
     <div class="admin-card-body">
-        <div class="admin-table-wrapper">
+        <div class="table-responsive">
             <table class="admin-table">
                 <thead>
                     <tr>
@@ -44,6 +44,9 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="pagination-wrapper">
+            {{ $bookings->links() }}
         </div>
     </div>
 </div>

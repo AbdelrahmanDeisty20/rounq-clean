@@ -725,26 +725,27 @@ table.admin-table { width: 100%; border-collapse: separate; border-spacing: 0; f
     height: 16px !important;
 }
 
-/* تباعد بسيط للمعرض مع الحفاظ على الشكل الأصلي */
-.gallery-grid {
+/* تباعد بسيط للمعرض - للأدمن فقط */
+.admin-main .gallery-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px; /* المسافة اللي طلبتها */
+    gap: 20px;
     justify-content: flex-start;
-    padding: 10px 0;
+    padding: 15px 0;
 }
 
-.gallery-item {
+.admin-main .gallery-item {
     transition: transform 0.2s;
+    margin-bottom: 5px;
 }
 
-.gallery-item:hover {
+.admin-main .gallery-item:hover {
     transform: scale(1.02);
 }
 
 @media (max-width: 768px) {
-    .gallery-grid {
-        gap: 10px;
+    .admin-main .gallery-grid {
+        gap: 12px;
         justify-content: center;
     }
 }

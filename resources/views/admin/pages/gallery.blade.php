@@ -19,7 +19,8 @@
                     <i class="fas {{ $img->icon }}" style="font-size:50px; color:#94a3b8"></i>
                     <div style="margin-top:10px; font-weight:700; color:#64748b">{{ $img->title }}</div>
                 @endif
-                <div class="gallery-overlay" style="opacity:1; background:transparent; display:flex; justify-content:flex-end; padding:10px; position:absolute; top:0; left:0; right:0">
+                <div class="gallery-overlay" style="opacity:1; background:transparent; display:flex; justify-content:flex-end; gap:5px; padding:10px; position:absolute; top:0; left:0; right:0">
+                    <button class="action-btn edit" onclick="editGallery({{ json_encode($img) }})" style="background:rgba(14,165,233,0.9); color:white; border:none; width:32px; height:32px; border-radius:50%"><i class="fas fa-edit"></i></button>
                     <button class="action-btn delete" onclick="deleteGallery({{ $img->id }})" style="background:rgba(239,83,80,0.9); color:white; border:none; width:32px; height:32px; border-radius:50%"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
@@ -39,6 +40,7 @@
             <button class="admin-modal-close" onclick="closeGalleryModal()">&times;</button>
         </div>
         <form id="galleryForm" onsubmit="handleGallerySubmit(event)" enctype="multipart/form-data">
+            <input type="hidden" name="id" id="galleryId">
             <div class="admin-modal-body">
                 <div class="form-group-admin">
                     <label>عنوان الخدمة (مثلاً: تنظيف فلل)</label>
@@ -113,7 +115,28 @@
 <script>
 window.openGalleryModal = function() {
     $('#galleryForm')[0].reset();
+    $('#galleryId').val('');
     $('#galleryType').val('icon');
+    $('.admin-modal-header h3').html('<i class="fas fa-images"></i> إضافة صورة جديدة');
+    toggleGalleryInputs();
+    $('#galleryModal').addClass('open');
+}
+
+window.editGallery = function(img) {
+    $('#galleryForm')[0].reset();
+    $('#galleryId').val(img.id);
+    $('#galleryTitle').val(img.title);
+    $('#galleryCategory').val(img.category || 'all');
+    
+    $('.admin-modal-header h3').html('<i class="fas fa-edit"></i> تعديل العنصر');
+
+    if(img.url) {
+        $('#galleryType').val('image');
+    } else {
+        $('#galleryType').val('icon');
+        $('#galleryIcon').val(img.icon);
+    }
+    
     toggleGalleryInputs();
     $('#galleryModal').addClass('open');
 }
@@ -123,11 +146,9 @@ window.toggleGalleryInputs = function() {
     if(type === 'icon') {
         $('#iconInputGroup').show();
         $('#imageInputGroup').hide();
-        $('#galleryUrl').val('');
     } else {
         $('#iconInputGroup').hide();
         $('#imageInputGroup').show();
-        $('#galleryIcon').val('');
     }
 }
 
@@ -139,26 +160,33 @@ window.handleGallerySubmit = function(e) {
     e.preventDefault();
     const form = $('#galleryForm')[0];
     const formData = new FormData(form);
+    const id = $('#galleryId').val();
 
     const type = $('#galleryType').val();
     if(type === 'icon' && !$('#galleryIcon').val()) {
         showNotif('يرجى اختيار أيقونة', 'error');
         return;
     }
-    if(type === 'image' && !$('#galleryImageFile').val()) {
+    
+    // في حالة الإضافة الجديدة فقط نطلب الصورة، في التعديل اختيارية
+    if(!id && type === 'image' && !$('#galleryImageFile').val()) {
         showNotif('يرجى اختيار صورة من جهازك', 'error');
         return;
     }
 
     const btn = $(form).find('button[type="submit"]');
-    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> جاري الرفع...');
+    const originalText = btn.text();
+    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...');
+
+    const url = id ? `/admin/gallery/${id}` : '/admin/gallery';
+    if(id) formData.append('_method', 'PUT'); // لارافيل يحتاج هذا لعمليات الـ PUT مع FormData
 
     $.ajax({
-        url: '/admin/gallery',
-        method: 'POST',
+        url: url,
+        method: 'POST', // نستخدم POST دائماً مع FormData ونضيف _method لـ PUT
         data: formData,
-        processData: false, // مهم جداً لرفع الصور
-        contentType: false, // مهم جداً لرفع الصور
+        processData: false,
+        contentType: false,
         success: function() {
             showNotif('تمت إضافة الصورة بنجاح ✅');
             setTimeout(() => location.reload(), 1000);

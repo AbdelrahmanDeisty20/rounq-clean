@@ -72,6 +72,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::middleware('permission:manage gallery')->group(function() {
         Route::get('/gallery', [AdminController::class, 'gallery'])->name('admin.gallery');
         Route::post('/gallery', [AdminController::class, 'storeGallery']);
+        Route::put('/gallery/{id}', [AdminController::class, 'updateGallery']);
         Route::delete('/gallery/{id}', [AdminController::class, 'deleteGallery']);
     });
 

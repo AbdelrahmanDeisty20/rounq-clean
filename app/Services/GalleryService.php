@@ -16,6 +16,13 @@ class GalleryService
         return GalleryImage::create($data);
     }
 
+    public function update($id, array $data)
+    {
+        $img = GalleryImage::findOrFail($id);
+        $img->update($data);
+        return $img;
+    }
+
     public function delete($id)
     {
         return GalleryImage::destroy($id);

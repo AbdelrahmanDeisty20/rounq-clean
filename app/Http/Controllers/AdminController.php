@@ -471,6 +471,29 @@ class AdminController extends Controller
         return response()->json($this->galleryService->create($data));
     }
 
+    public function updateGallery(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'nullable|string',
+            'icon' => 'nullable|string',
+            'category' => 'nullable|string',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+        ]);
+
+        $data = $request->only(['title', 'icon', 'category']);
+
+        if ($request->hasFile('image_file')) {
+            $imageName = time() . '_' . uniqid() . '.' . $request->image_file->extension();
+            $request->image_file->move(public_path('uploads/gallery'), $imageName);
+            $data['url'] = '/uploads/gallery/' . $imageName;
+            $data['icon'] = null;
+        } elseif ($request->filled('icon')) {
+            $data['url'] = null; // نلغي الصورة لو اختار أيقونة
+        }
+
+        return response()->json($this->galleryService->update($id, $data));
+    }
+
     public function deleteGallery($id)
     {
         $this->galleryService->delete($id);

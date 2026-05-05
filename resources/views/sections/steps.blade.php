@@ -32,41 +32,35 @@
         <div class="modal-body" style="padding: 0;">
             <p style="margin-bottom: 25px; color: var(--gray-700); font-size: 15px;">اختر طريقة التواصل المناسبة لك لطلب الخدمة</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <a id="stepCallBtn" href="#" class="btn btn-primary" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; border-radius: 15px; gap: 10px; height: 120px;">
+                <button id="stepCallBtn" onclick="handleStepCall()" class="btn btn-primary" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; border-radius: 15px; gap: 10px; height: 120px; border:none; cursor:pointer; width:100%;">
                     <i class="fas fa-phone" style="font-size: 28px;"></i>
                     <span>اتصال هاتفي</span>
-                </a>
-                <a id="stepWaBtn" href="#" class="btn btn-whatsapp" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; border-radius: 15px; gap: 10px; height: 120px;">
+                </button>
+                <button id="stepWaBtn" onclick="handleStepWa()" class="btn btn-whatsapp" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; border-radius: 15px; gap: 10px; height: 120px; border:none; cursor:pointer; width:100%;">
                     <i class="fab fa-whatsapp" style="font-size: 32px;"></i>
                     <span>مراسلة واتساب</span>
-                </a>
+                </button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+let currentStepCall = '';
+let currentStepWa = '';
+
 window.showStepContact = function(call, wa) {
-    if (call) {
-        // Add tel: if it's just a number
-        let callUrl = call;
-        if (!call.startsWith('tel:') && !call.startsWith('http')) {
-            callUrl = 'tel:' + call.replace(/\s/g, '');
-        }
-        $('#stepCallBtn').attr('href', callUrl).css('display', 'flex');
+    currentStepCall = call || '';
+    currentStepWa = wa || '';
+    
+    if (currentStepCall) {
+        $('#stepCallBtn').show().css('display', 'flex');
     } else {
         $('#stepCallBtn').hide();
     }
     
-    if (wa) {
-        // Ensure WhatsApp link is correct
-        let waUrl = wa;
-        if (!wa.startsWith('http')) {
-            // Remove + and spaces, add wa.me
-            let cleanWa = wa.replace(/\+|\s/g, '');
-            waUrl = 'https://wa.me/' + cleanWa;
-        }
-        $('#stepWaBtn').attr('href', waUrl).attr('target', '_blank').css('display', 'flex');
+    if (currentStepWa) {
+        $('#stepWaBtn').show().css('display', 'flex');
     } else {
         $('#stepWaBtn').hide();
     }
@@ -74,11 +68,29 @@ window.showStepContact = function(call, wa) {
     $('#stepContactModal').addClass('open');
 };
 
+window.handleStepCall = function() {
+    if (!currentStepCall) return;
+    let url = currentStepCall;
+    if (!url.startsWith('tel:') && !url.startsWith('http')) {
+        url = 'tel:' + url.replace(/\s/g, '');
+    }
+    window.location.href = url;
+};
+
+window.handleStepWa = function() {
+    if (!currentStepWa) return;
+    let url = currentStepWa;
+    if (!url.startsWith('http')) {
+        let cleanWa = url.replace(/\+|\s/g, '');
+        url = 'https://wa.me/' + cleanWa;
+    }
+    window.open(url, '_blank');
+};
+
 window.closeStepContact = function() {
     $('#stepContactModal').removeClass('open');
 };
 
-// Close modal when clicking outside
 $(document).on('click', '#stepContactModal', function(e) {
     if ($(e.target).hasClass('modal-overlay')) {
         closeStepContact();

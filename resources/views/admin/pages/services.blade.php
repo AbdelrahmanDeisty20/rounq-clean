@@ -72,7 +72,8 @@
                     </div>
                     <div class="form-group-admin">
                         <label>أيقونة الخدمة</label>
-                        <select name="icon" id="serviceIcon" required>
+                        <select name="icon" id="serviceIcon">
+                            <option value="">-- اختر أيقونة (اختياري) --</option>
                             <option value="fa-broom">🧹 مكنسة (تنظيف عام)</option>
                             <option value="fa-home">🏠 منزل (تنظيف منازل)</option>
                             <option value="fa-spray-can">🧴 بخاخ (تعقيم وتطهير)</option>

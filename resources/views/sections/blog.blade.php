@@ -15,7 +15,7 @@
           @else
             <i class="fas fa-rss" style="font-size:48px; color:#93c5fd; opacity:0.8"></i>
           @endif
-          <div class="blog-cat-floating" style="position:absolute; bottom:15px; left:15px; background:white; color:#1e3a8a; padding:4px 15px; border-radius:50px; font-size:12px; font-weight:700; box-shadow:0 4px 10px rgba(0,0,0,0.1)">تنظيف المطبخ</div>
+
         </div>
         <div class="blog-body" style="padding:25px; text-align:right">
           <h3 style="font-size:18px; font-weight:900; color:#1e3a8a; margin-bottom:12px; line-height:1.5">{{ $item->title }}</h3>

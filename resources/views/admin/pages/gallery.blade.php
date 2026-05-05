@@ -12,16 +12,22 @@
     <div class="admin-card-body">
         <div class="gallery-grid">
             @foreach($gallery as $img)
-            <div class="gallery-item" style="height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; position:relative">
-                @if($img->url)
-                    <img src="{{ asset($img->url) }}" style="width:100%; height:100%; object-fit:cover; border-radius:12px">
-                @elseif($img->icon)
-                    <i class="fas {{ $img->icon }}" style="font-size:50px; color:#94a3b8"></i>
-                    <div style="margin-top:10px; font-weight:700; color:#64748b">{{ $img->title }}</div>
-                @endif
-                <div class="gallery-overlay" style="opacity:1; background:transparent; display:flex; justify-content:flex-end; gap:5px; padding:10px; position:absolute; top:0; left:0; right:0">
-                    <button class="action-btn edit" onclick="editGallery({{ json_encode($img) }})" style="background:rgba(14,165,233,0.9); color:white; border:none; width:32px; height:32px; border-radius:50%"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn delete" onclick="deleteGallery({{ $img->id }})" style="background:rgba(239,83,80,0.9); color:white; border:none; width:32px; height:32px; border-radius:50%"><i class="fas fa-trash"></i></button>
+            <div class="gallery-item" style="height:220px; display:flex; flex-direction:column; background:white; border-radius:12px; border:1px solid #e2e8f0; position:relative; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.02)">
+                <div style="flex:1; width:100%; display:flex; align-items:center; justify-content:center; background:#f8fafc; overflow:hidden">
+                    @if($img->url)
+                        <img src="{{ asset($img->url) }}" style="width:100%; height:100%; object-fit:cover">
+                    @elseif($img->icon)
+                        <i class="fas {{ $img->icon }}" style="font-size:40px; color:#94a3b8"></i>
+                    @endif
+                </div>
+                <div style="padding:10px; text-align:center; background:white; border-top:1px solid #f1f5f9">
+                    <div style="font-weight:700; color:#475569; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">
+                        {{ $img->title ?: 'بدون عنوان' }}
+                    </div>
+                </div>
+                <div class="gallery-overlay-btns" style="position:absolute; top:8px; left:8px; display:flex; gap:5px">
+                    <button class="action-btn edit" onclick="editGallery({{ json_encode($img) }})" style="background:rgba(14,165,233,0.9); color:white; border:none; width:28px; height:28px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete" onclick="deleteGallery({{ $img->id }})" style="background:rgba(239,83,80,0.9); color:white; border:none; width:28px; height:28px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
             @endforeach

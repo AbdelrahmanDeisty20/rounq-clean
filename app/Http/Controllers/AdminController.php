@@ -24,7 +24,6 @@ use App\Models\GalleryImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -467,14 +466,16 @@ class AdminController extends Controller
                 $file = $request->file('image_file');
                 $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 
-                // الرفع باستخدام Storage disk 'public'
-                $path = $file->storeAs('gallery', $imageName, 'public');
+                $destPath = public_path('uploads/gallery');
+                if (!file_exists($destPath)) {
+                    @mkdir($destPath, 0755, true);
+                }
 
-                if ($path) {
+                if ($file->move($destPath, $imageName)) {
                     $data['url'] = '/uploads/gallery/' . $imageName;
                     $data['icon'] = null;
                 } else {
-                    throw new \Exception("فشل رفع الملف إلى الـ Storage");
+                    throw new \Exception("فشل في رفع الملف. تأكد من وجود مجلد public/uploads/gallery");
                 }
             }
 
@@ -505,13 +506,16 @@ class AdminController extends Controller
                 $file = $request->file('image_file');
                 $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 
-                $path = $file->storeAs('gallery', $imageName, 'public');
+                $destPath = public_path('uploads/gallery');
+                if (!file_exists($destPath)) {
+                    @mkdir($destPath, 0755, true);
+                }
 
-                if ($path) {
+                if ($file->move($destPath, $imageName)) {
                     $data['url'] = '/uploads/gallery/' . $imageName;
                     $data['icon'] = null;
                 } else {
-                    throw new \Exception("فشل في تحديث الصورة في الـ Storage");
+                    throw new \Exception("فشل في تحديث الصورة");
                 }
             } elseif ($request->filled('icon')) {
                 $data['url'] = null;

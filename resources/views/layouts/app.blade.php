@@ -77,6 +77,15 @@
                 $.post('{{ route('track.click') }}', { type: 'phone', _token: '{{ csrf_token() }}' });
             });
         });
+
+        function toggleMobile() {
+            document.getElementById('mobileNav').classList.toggle('open');
+        }
+
+        // Close mobile nav when clicking a link
+        $(document).on('click', '#mobileNav a', function() {
+            $('#mobileNav').removeClass('open');
+        });
     </script>
 </body>
 </html>

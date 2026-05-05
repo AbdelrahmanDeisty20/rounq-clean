@@ -10,7 +10,7 @@
       @foreach($gallery as $img)
       <div class="gallery-item @if(!$img->url) img-placeholder @endif">
         @if($img->url)
-          <img src="{{ $img->url }}" alt="{{ $img->title ?? 'Gallery Image' }}">
+          <img src="{{ asset($img->url) }}" alt="{{ $img->title ?? 'Gallery Image' }}">
         @else
           <i class="fas {{ $img->icon ?? 'fa-home' }}"></i>
           <span>{{ $img->title ?? 'تنظيف شامل' }}</span>

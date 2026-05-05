@@ -14,7 +14,7 @@
             @foreach($gallery as $img)
             <div class="gallery-item" style="height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; position:relative">
                 @if($img->url)
-                    <img src="{{ $img->url }}" style="width:100%; height:100%; object-fit:cover; border-radius:12px">
+                    <img src="{{ asset($img->url) }}" style="width:100%; height:100%; object-fit:cover; border-radius:12px">
                 @elseif($img->icon)
                     <i class="fas {{ $img->icon }}" style="font-size:50px; color:#94a3b8"></i>
                     <div style="margin-top:10px; font-weight:700; color:#64748b">{{ $img->title }}</div>

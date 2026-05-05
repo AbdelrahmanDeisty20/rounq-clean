@@ -468,10 +468,10 @@ class AdminController extends Controller
                 $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 
                 // الرفع باستخدام Storage disk 'public'
-                $path = $file->storeAs('uploads/gallery', $imageName, 'public');
+                $path = $file->storeAs('gallery', $imageName, 'public');
 
                 if ($path) {
-                    $data['url'] = '/storage/uploads/gallery/' . $imageName;
+                    $data['url'] = '/uploads/gallery/' . $imageName;
                     $data['icon'] = null;
                 } else {
                     throw new \Exception("فشل رفع الملف إلى الـ Storage");
@@ -505,10 +505,10 @@ class AdminController extends Controller
                 $file = $request->file('image_file');
                 $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 
-                $path = $file->storeAs('uploads/gallery', $imageName, 'public');
+                $path = $file->storeAs('gallery', $imageName, 'public');
 
                 if ($path) {
-                    $data['url'] = '/storage/uploads/gallery/' . $imageName;
+                    $data['url'] = '/uploads/gallery/' . $imageName;
                     $data['icon'] = null;
                 } else {
                     throw new \Exception("فشل في تحديث الصورة في الـ Storage");

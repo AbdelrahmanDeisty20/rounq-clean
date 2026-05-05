@@ -250,12 +250,52 @@ class AdminController extends Controller
 
     public function storeService(ServiceRequest $request)
     {
-        return response()->json($this->serviceService->create($request->validated()));
+        try {
+            $data = $request->validated();
+
+            if ($request->hasFile('image_file')) {
+                $file = $request->file('image_file');
+                $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $destPath = base_path('uploads/services');
+                
+                if (!file_exists($destPath)) {
+                    @mkdir($destPath, 0755, true);
+                }
+
+                if ($file->move($destPath, $imageName)) {
+                    $data['icon'] = '/uploads/services/' . $imageName;
+                }
+            }
+
+            return response()->json($this->serviceService->create($data));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
     public function updateService(ServiceRequest $request, $id)
     {
-        return response()->json($this->serviceService->update($id, $request->validated()));
+        try {
+            $data = $request->validated();
+
+            if ($request->hasFile('image_file')) {
+                $file = $request->file('image_file');
+                $imageName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $destPath = base_path('uploads/services');
+                
+                if (!file_exists($destPath)) {
+                    @mkdir($destPath, 0755, true);
+                }
+
+                if ($file->move($destPath, $imageName)) {
+                    $data['icon'] = '/uploads/services/' . $imageName;
+                }
+            }
+
+            return response()->json($this->serviceService->update($id, $data));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
     public function deleteService($id)

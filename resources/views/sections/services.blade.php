@@ -9,7 +9,13 @@
     <div class="services-grid">
       @foreach($services as $service)
       <div class="service-card" onclick="openModal('{{ $service->name }}')">
-        <div class="svc-icon"><i class="fas {{ $service->icon ?? 'fa-broom' }}"></i></div>
+        <div class="svc-icon">
+          @if(str_starts_with($service->icon, '/uploads/'))
+            <img src="{{ $service->icon }}" alt="{{ $service->name }}" style="width:100%; height:100%; object-fit:contain">
+          @else
+            <i class="fas {{ $service->icon ?? 'fa-broom' }}"></i>
+          @endif
+        </div>
         <h3>{{ $service->name }}</h3>
         <p>{{ $service->short_desc }}</p>
       </div>

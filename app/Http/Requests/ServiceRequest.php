@@ -12,7 +12,8 @@ class ServiceRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'icon' => 'nullable|string|max:100',
+            'icon' => 'nullable|string|max:255',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
             'description' => 'nullable|string',
             'is_active' => 'boolean'
         ];

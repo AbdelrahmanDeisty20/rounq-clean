@@ -23,7 +23,13 @@
                 <tbody id="servicesTableBody">
                     @foreach($services as $service)
                     <tr data-id="{{ $service->id }}">
-                        <td><i class="fas {{ $service->icon }} text-gold"></i></td>
+                        <td>
+                            @if(str_starts_with($service->icon, '/uploads/'))
+                                <img src="{{ $service->icon }}" style="width:40px; height:40px; border-radius:4px; object-fit:cover">
+                            @else
+                                <i class="fas {{ $service->icon }} text-gold"></i>
+                            @endif
+                        </td>
                         <td>{{ $service->name }}</td>
                         <td>
                             @if($service->is_active)
@@ -84,6 +90,17 @@
                     </div>
                 </div>
                 <div class="form-group-admin">
+                    <label>صورة الخدمة (اختياري - سيتم تجاهل الأيقونة إذا رفعت صورة)</label>
+                    <div style="display:flex; gap:15px; align-items:center; background:var(--gray-100); padding:15px; border-radius:8px">
+                        <div id="servicePreview" style="width:60px; height:60px; background:#ddd; border-radius:8px; overflow:hidden">
+                            <div style="display:flex; align-items:center; justify-content:center; height:100%; color:#888; font-size:12px">لا توجد</div>
+                        </div>
+                        <div style="flex:1">
+                            <input type="file" name="image_file" id="serviceImageFile" accept="image/*" onchange="previewServiceImage(event)">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group-admin">
                     <label>الوصف</label>
                     <textarea name="description" id="serviceDescription" rows="3" placeholder="وصف مختصر للخدمة..."></textarea>
                 </div>
@@ -105,8 +122,19 @@
 window.openServiceModal = function() {
     $('#serviceForm')[0].reset();
     $('#serviceId').val('');
+    $('#servicePreview').html('<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#888; font-size:12px">لا توجد</div>');
     $('#serviceModalTitle').text('إضافة خدمة جديدة');
     $('#serviceModal').addClass('open');
+}
+
+window.previewServiceImage = function(event) {
+    if(event.target.files && event.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $('#servicePreview').html(`<img src='${e.target.result}' style='width:100%; height:100%; object-fit:cover'>`);
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
 }
 
 window.closeServiceModal = function() {
@@ -119,6 +147,13 @@ window.editService = function(service) {
     $('#serviceIcon').val(service.icon);
     $('#serviceDescription').val(service.description);
     $('#serviceIsActive').prop('checked', service.is_active);
+    
+    if(service.icon && service.icon.startsWith('/uploads/')) {
+        $('#servicePreview').html(`<img src='${service.icon}' style='width:100%; height:100%; object-fit:cover'>`);
+    } else {
+        $('#servicePreview').html('<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#888; font-size:12px">أيقونة</div>');
+    }
+
     $('#serviceModalTitle').text('تعديل الخدمة');
     $('#serviceModal').addClass('open');
 }
@@ -139,37 +174,31 @@ window.deleteService = function(id) {
 
 window.handleServiceSubmit = function(e) {
     e.preventDefault();
-    const form = $('#serviceForm');
+    const form = $('#serviceForm')[0];
+    const formData = new FormData(form);
     const id = $('#serviceId').val();
     const url = id ? `/admin/services/${id}` : '/admin/services';
     
-    const formData = form.serializeArray();
-    const cleanData = {};
-    formData.forEach(item => {
-        if (item.name !== 'is_active') {
-            cleanData[item.name] = item.value;
-        }
-    });
-    cleanData['is_active'] = $('#serviceIsActive').is(':checked') ? '1' : '0';
+    // Handle checkbox
+    formData.set('is_active', $('#serviceIsActive').is(':checked') ? '1' : '0');
 
-    const btn = form.find('button[type="submit"]');
+    const btn = $(form).find('button[type="submit"]');
     btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...');
 
     $.ajax({
         url: url,
         method: 'POST',
-        data: cleanData,
-        timeout: 10000, // 10 seconds timeout
+        data: formData,
+        processData: false,
+        contentType: false,
         success: function() {
             showNotif('تم حفظ الخدمة بنجاح ✅');
             setTimeout(() => location.reload(), 1000);
         },
         error: function(xhr) {
             if (xhr.status === 422 && xhr.responseJSON) {
-                showRemoteErrors(xhr.responseJSON.errors, form);
+                showRemoteErrors(xhr.responseJSON.errors, $(form));
                 showNotif('يرجى التحقق من الحقول المطلوبة', 'error');
-            } else if (xhr.statusText === 'timeout') {
-                showNotif('انتهت مهلة الطلب، يرجى المحاولة مرة أخرى', 'error');
             } else {
                 showNotif('حدث خطأ في النظام، يرجى المحاولة لاحقاً', 'error');
             }

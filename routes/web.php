@@ -92,19 +92,30 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/contact-settings', [AdminController::class, 'updateContactSettings']);
     Route::post('/seo', [AdminController::class, 'updateSeoSettings']);
     Route::post('/upload-image', [AdminController::class, 'uploadImage']);
+});
 
-    // لفحص بيانات الجاليري في قاعدة البيانات
-    Route::get('/check-gallery', function() {
-        return \App\Models\GalleryImage::all();
-    });
+// روابط تشخيصية (خارج الحماية والبريفكس مؤقتاً لحل مشكلة الـ 404)
+Route::get('/check-gallery', function() {
+    return \App\Models\GalleryImage::all();
+});
 
-    // لعمل ربط الصور (Symlink) على السيرفر
-    Route::get('/storage-link', function() {
-        try {
-            \Illuminate\Support\Facades\Artisan::call('storage:link');
-            return "تم إنشاء رابط الـ Storage بنجاح ✅";
-        } catch (\Exception $e) {
-            return "خطأ: " . $e->getMessage();
-        }
-    });
+Route::get('/storage-link', function() {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        return "تم إنشاء رابط الـ Storage بنجاح ✅";
+    } catch (\Exception $e) {
+        return "خطأ: " . $e->getMessage();
+    }
+});
+
+Route::get('/clear-all-cache', function() {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('route:clear');
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+        \Illuminate\Support\Facades\Artisan::call('view:clear');
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        return "تم مسح جميع أنواع الكاش بنجاح ✅ - جرب الروابط التانية دلوقتي.";
+    } catch (\Exception $e) {
+        return "خطأ: " . $e->getMessage();
+    }
 });

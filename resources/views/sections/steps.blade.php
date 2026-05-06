@@ -8,14 +8,33 @@
     <div class="steps-grid">
       @foreach($homeSettings['steps']['items'] ?? [] as $step)
         @php 
-          $hasLinks = !empty($step['call_link']) || !empty($step['wa_link']);
+          $isContact = ($loop->first); // Only the first step (تواصل معنا)
+          $hasLinks = $isContact && (!empty($step['call_link']) || !empty($step['wa_link']));
+          // If it's contact step but links are empty, we can still use the global contact settings
+          if($isContact && !$hasLinks) {
+              $step['call_link'] = $contactSettings['phone'] ?? '';
+              $step['wa_link'] = $contactSettings['whatsapp'] ?? '';
+              $hasLinks = !empty($step['call_link']) || !empty($step['wa_link']);
+          }
         @endphp
         <div class="step-card {{ $hasLinks ? 'clickable' : '' }}" 
              @if($hasLinks) onclick="showStepContact('{{ $step['call_link'] ?? '' }}', '{{ $step['wa_link'] ?? '' }}')" @endif
              style="{{ $hasLinks ? 'cursor: pointer;' : '' }}">
-          <div class="step-num"><i class="fas {{ $step['icon'] ?? 'fa-check' }}"></i></div>
+          <div class="step-num">
+            @if($loop->first)
+              1
+            @else
+              <i class="fas {{ $step['icon'] ?? 'fa-check' }}"></i>
+            @endif
+          </div>
           <h3>{{ $step['title'] ?? '' }}</h3>
-          <p>{{ $step['desc'] ?? '' }}</p>
+          <p>
+            @if($loop->first && isset($contactSettings['phone']))
+               اتصل بنا <span class="text-gold" style="direction: ltr; display: inline-block;">{{ $contactSettings['phone'] }}</span> أو تواصل عبر واتساب
+            @else
+              {{ $step['desc'] ?? '' }}
+            @endif
+          </p>
         </div>
       @endforeach
     </div>

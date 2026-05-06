@@ -36,12 +36,14 @@
     </nav>
     <div class="header-actions">
       @php 
-        $waNum = $contactSettings['whatsapp'] ?? '966550000000';
-        if (str_starts_with($waNum, '0')) {
-            $waNum = '966' . substr($waNum, 1);
+        $waHeader = $contactSettings['whatsapp'] ?? $contactSettings['phone'] ?? '966550000000';
+        if (!str_contains($waHeader, 'wa.me') && !str_contains($waHeader, 'http')) {
+            $waHeader = str_replace(['+', ' ', '-', '(', ')'], '', $waHeader);
+            if (str_starts_with($waHeader, '0')) { $waHeader = '966' . substr($waHeader, 1); }
+            $waHeader = 'https://wa.me/' . $waHeader;
         }
       @endphp
-      <a href="https://wa.me/{{ $waNum }}" class="btn btn-whatsapp" id="headerWaBtn"><i class="fab fa-whatsapp"></i> واتساب</a>
+      <a href="{{ $waHeader }}" class="btn btn-whatsapp" id="headerWaBtn"><i class="fab fa-whatsapp"></i> واتساب</a>
       <a href="#" class="btn btn-gold" onclick="openModal()"><i class="fas fa-calendar-check"></i> اطلب الخدمة</a>
     </div>
     <button class="mobile-toggle" onclick="toggleMobile()"><i class="fas fa-bars"></i></button>
@@ -54,11 +56,10 @@
     <a href="#blogGrid">المقالات</a>
     <a href="#contact">تواصل معنا</a>
     @php 
-      $waNumFooter = $contactSettings['whatsapp'] ?? '966550000000';
-      if (str_starts_with($waNumFooter, '0')) {
-          $waNumFooter = '966' . substr($waNumFooter, 1);
-      }
+      $waMobile = $contactSettings['whatsapp'] ?? $contactSettings['phone'] ?? '966550000000';
+      $waMobile = str_replace(['+', ' ', '-', '(', ')'], '', $waMobile);
+      if (str_starts_with($waMobile, '0')) { $waMobile = '966' . substr($waMobile, 1); }
     @endphp
-    <li><a href="https://wa.me/{{ $waNumFooter }}"><i class="fab fa-whatsapp"></i> واتساب</a></li>
+    <a href="https://wa.me/{{ $waMobile }}" style="color:var(--green)"><i class="fab fa-whatsapp"></i> واتساب</a>
   </div>
 </header>

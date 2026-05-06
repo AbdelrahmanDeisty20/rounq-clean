@@ -2,9 +2,9 @@
 <div class="topbar">
   <div class="container">
     <div>
-      <a href="tel:{{ $contactSettings['phone1'] ?? '0550000000' }}"><i class="fas fa-phone"></i> {{ $contactSettings['phone1'] ?? '0550000000' }}</a>
+      <a href="tel:{{ $contactSettings['phone'] ?? '0550000000' }}"><i class="fas fa-phone"></i> {{ $contactSettings['phone'] ?? '0550000000' }}</a>
       <span style="margin:0 10px;opacity:.3">|</span>
-      <a href="mailto:{{ $contactSettings['email1'] ?? 'info@alostora.com' }}"><i class="fas fa-envelope"></i> {{ $contactSettings['email1'] ?? 'info@alostora.com' }}</a>
+      <a href="mailto:{{ $contactSettings['email'] ?? 'info@alostora.com' }}"><i class="fas fa-envelope"></i> {{ $contactSettings['email'] ?? 'info@alostora.com' }}</a>
     </div>
     <div class="topbar-right">
       @if($contactSettings['snapchat'] ?? false) <a href="{{ $contactSettings['snapchat'] }}"><i class="fab fa-snapchat"></i></a> @endif
@@ -22,8 +22,8 @@
     <a href="{{ url('/') }}" class="logo">
       <div class="logo-icon"><i class="fas fa-star"></i></div>
       <div class="logo-text">
-        <h1>الأسطورة رونق قلب الخليج</h1>
-        <span>شركة تنظيف احترافية - القصيم</span>
+        <h1>{{ $seoSettings['seoSite'] ?? 'الأسطورة رونق قلب الخليج' }}</h1>
+        <span>{{ $seoSettings['seoSlogan'] ?? 'شركة تنظيف احترافية - القصيم' }}</span>
       </div>
     </a>
     <nav id="mainNav">
@@ -35,7 +35,7 @@
       <a href="#contact">تواصل معنا</a>
     </nav>
     <div class="header-actions">
-      <a href="https://wa.me/{{ $contactSettings['wa'] ?? '966550000000' }}" class="btn btn-whatsapp" id="headerWaBtn"><i class="fab fa-whatsapp"></i> واتساب</a>
+      <a href="https://wa.me/{{ $contactSettings['whatsapp'] ?? '966550000000' }}" class="btn btn-whatsapp" id="headerWaBtn"><i class="fab fa-whatsapp"></i> واتساب</a>
       <a href="#" class="btn btn-gold" onclick="openModal()"><i class="fas fa-calendar-check"></i> اطلب الخدمة</a>
     </div>
     <button class="mobile-toggle" onclick="toggleMobile()"><i class="fas fa-bars"></i></button>

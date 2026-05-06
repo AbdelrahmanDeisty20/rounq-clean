@@ -4,7 +4,7 @@
       <div class="footer-brand">
         <a href="#" class="logo">
           <div class="logo-icon"><i class="fas fa-star"></i></div>
-          <div class="logo-text"><h1>الأسطورة رونق قلب الخليج</h1><span>شركة تنظيف احترافية</span></div>
+          <div class="logo-text"><h1>{{ $seoSettings['seoSite'] ?? 'الأسطورة رونق قلب الخليج' }}</h1><span>{{ $seoSettings['seoSlogan'] ?? 'شركة تنظيف احترافية' }}</span></div>
         </a>
         <p>شركة متخصصة في خدمات التنظيف الشامل للمنازل والفلل والمكاتب في منطقة القصيم. نلتزم بالجودة والدقة والأمانة في كل مهمة.</p>
         <div class="social-links">
@@ -41,10 +41,10 @@
       <div class="footer-col">
         <h4>تواصل معنا</h4>
         <ul>
-          <li><a href="tel:{{ $contactSettings['phone1'] ?? '0550000000' }}"><i class="fas fa-phone"></i> {{ $contactSettings['phone1'] ?? '0550000000' }}</a></li>
-          <li><a href="https://wa.me/{{ $contactSettings['wa'] ?? '966550000000' }}"><i class="fab fa-whatsapp"></i> واتساب</a></li>
-          <li><a href="mailto:{{ $contactSettings['email1'] ?? 'info@alostora.com' }}"><i class="fas fa-envelope"></i> {{ $contactSettings['email1'] ?? 'info@alostora.com' }}</a></li>
-          <li><a href="#"><i class="fas fa-map-marker-alt"></i> بريدة، القصيم</a></li>
+          <li><a href="tel:{{ $contactSettings['phone'] ?? '0550000000' }}"><i class="fas fa-phone"></i> {{ $contactSettings['phone'] ?? '0550000000' }}</a></li>
+          <li><a href="https://wa.me/{{ $contactSettings['whatsapp'] ?? '966550000000' }}"><i class="fab fa-whatsapp"></i> واتساب</a></li>
+          <li><a href="mailto:{{ $contactSettings['email'] ?? 'info@alostora.com' }}"><i class="fas fa-envelope"></i> {{ $contactSettings['email'] ?? 'info@alostora.com' }}</a></li>
+          <li><a href="#"><i class="fas fa-map-marker-alt"></i> {{ $contactSettings['address'] ?? 'بريدة، القصيم' }}</a></li>
           <li><a href="#"><i class="fas fa-clock"></i> {{ $contactSettings['hours'] ?? 'السبت-الخميس 7ص-10م' }}</a></li>
         </ul>
       </div>

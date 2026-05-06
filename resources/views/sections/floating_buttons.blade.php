@@ -1,5 +1,10 @@
 <div class="floating-buttons">
-  <a href="https://wa.me/{{ $contactSettings['whatsapp'] ?? '966550000000' }}?text=السلام عليكم، أود الاستفسار" class="float-btn float-btn-wa" id="floatWa">
+  @php 
+    $waFloat = $contactSettings['whatsapp'] ?? '966550000000';
+    $waFloat = str_replace(['+', ' '], '', $waFloat);
+    if (str_starts_with($waFloat, '0')) { $waFloat = '966' . substr($waFloat, 1); }
+  @endphp
+  <a href="https://wa.me/{{ $waFloat }}?text=السلام عليكم، أود الاستفسار" class="float-btn float-btn-wa" id="floatWa">
     <i class="fab fa-whatsapp"></i>
     <span class="tooltip">تواصل واتساب</span>
   </a>

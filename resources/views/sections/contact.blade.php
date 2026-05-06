@@ -13,7 +13,12 @@
         </div>
         <div class="contact-item">
           <div class="icon" style="background:linear-gradient(135deg,#25d366,#128c7e)"><i class="fab fa-whatsapp"></i></div>
-          <div class="info"><strong>واتساب</strong><a href="https://wa.me/{{ $contactSettings['whatsapp'] ?? '966550000000' }}">{{ $contactSettings['phone'] ?? '0550000000' }}</a></div>
+          @php 
+            $waContact = $contactSettings['whatsapp'] ?? '966550000000';
+            $waContactClean = str_replace(['+', ' '], '', $waContact);
+            if (str_starts_with($waContactClean, '0')) { $waContactClean = '966' . substr($waContactClean, 1); }
+          @endphp
+          <div class="info"><strong>واتساب</strong><a href="https://wa.me/{{ $waContactClean }}">{{ $waContact }}</a></div>
         </div>
         <div class="contact-item">
           <div class="icon" style="background:linear-gradient(135deg,var(--gold),#e8c56a)"><i class="fas fa-envelope"></i></div>

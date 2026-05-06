@@ -213,11 +213,12 @@ class AdminController extends Controller
 
     public function analytics()
     {
-        $waClicks = \App\Models\Setting::where('key', 'wa_clicks')->first()->value ?? 0;
-        $phoneClicks = \App\Models\Setting::where('key', 'phone_clicks')->first()->value ?? 0;
+        $waClicks = \App\Models\Setting::where('key', 'wa_clicks')->value('value') ?? 0;
+        $phoneClicks = \App\Models\Setting::where('key', 'phone_clicks')->value('value') ?? 0;
+        $totalClicks = (int)$waClicks + (int)$phoneClicks;
         $bookingsCount = \App\Models\Booking::count();
 
-        return view('admin.pages.analytics', compact('waClicks', 'phoneClicks', 'bookingsCount'));
+        return view('admin.pages.analytics', compact('waClicks', 'phoneClicks', 'totalClicks', 'bookingsCount'));
     }
 
     public function changePassword()

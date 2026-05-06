@@ -20,13 +20,7 @@
         <div class="step-card {{ $hasLinks ? 'clickable' : '' }}" 
              @if($hasLinks) onclick="showStepContact('{{ $step['call_link'] ?? '' }}', '{{ $step['wa_link'] ?? '' }}')" @endif
              style="{{ $hasLinks ? 'cursor: pointer;' : '' }}">
-          <div class="step-num">
-            @if($loop->first)
-              1
-            @else
-              <i class="fas {{ $step['icon'] ?? 'fa-check' }}"></i>
-            @endif
-          </div>
+          <div class="step-num"><i class="fas {{ $step['icon'] ?? 'fa-check' }}"></i></div>
           <h3>{{ $step['title'] ?? '' }}</h3>
           <p>
             @if($loop->first && isset($contactSettings['phone']))

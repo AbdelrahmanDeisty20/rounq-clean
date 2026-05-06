@@ -8,20 +8,21 @@
     
     <div class="gallery-grid">
       @foreach($gallery as $img)
-      <div class="gallery-item" style="background:white; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column; border:1px solid var(--gray-200)">
-        <div class="gallery-img-wrap" style="aspect-ratio:4/3; overflow:hidden; background:#f8fafc; display:flex; align-items:center; justify-content:center; position:relative">
+      <div class="gallery-card">
+        <div class="card-img-container">
           @if($img->url)
-            <img src="{{ asset($img->url) }}" alt="{{ $img->title }}" style="width:100%; height:100%; object-fit:cover; transition:transform 0.4s">
+            <img src="{{ asset($img->url) }}" alt="{{ $img->title }}" class="card-img">
           @else
-            <i class="fas {{ $img->icon ?? 'fa-home' }}" style="font-size:40px; color:var(--primary); opacity:0.6"></i>
+            <div class="card-img-placeholder">
+              <i class="fas {{ $img->icon ?? 'fa-home' }}"></i>
+            </div>
           @endif
-          
-          <div class="gallery-overlay" style="position:absolute; inset:0; background:rgba(26,58,107,0.4); display:flex; align-items:center; justify-content:center; opacity:0; transition:0.3s">
-            <i class="fas fa-search-plus" style="color:white; font-size:24px"></i>
+          <div class="card-overlay">
+            <i class="fas fa-expand"></i>
           </div>
         </div>
-        <div class="gallery-info" style="padding:15px; text-align:center; background:white">
-          <h4 style="font-size:14px; font-weight:800; color:var(--primary); margin:0">{{ $img->title }}</h4>
+        <div class="card-content">
+          <h4>{{ $img->title }}</h4>
         </div>
       </div>
       @endforeach

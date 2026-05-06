@@ -35,7 +35,13 @@
       <a href="#contact">تواصل معنا</a>
     </nav>
     <div class="header-actions">
-      <a href="https://wa.me/{{ $contactSettings['whatsapp'] ?? '966550000000' }}" class="btn btn-whatsapp" id="headerWaBtn"><i class="fab fa-whatsapp"></i> واتساب</a>
+      @php 
+        $waNum = $contactSettings['whatsapp'] ?? '966550000000';
+        if (str_starts_with($waNum, '0')) {
+            $waNum = '966' . substr($waNum, 1);
+        }
+      @endphp
+      <a href="https://wa.me/{{ $waNum }}" class="btn btn-whatsapp" id="headerWaBtn"><i class="fab fa-whatsapp"></i> واتساب</a>
       <a href="#" class="btn btn-gold" onclick="openModal()"><i class="fas fa-calendar-check"></i> اطلب الخدمة</a>
     </div>
     <button class="mobile-toggle" onclick="toggleMobile()"><i class="fas fa-bars"></i></button>
@@ -47,6 +53,12 @@
     <a href="#gallery-section">معرض الأعمال</a>
     <a href="#blogGrid">المقالات</a>
     <a href="#contact">تواصل معنا</a>
-    <a href="https://wa.me/{{ $contactSettings['wa'] ?? '966550000000' }}" style="color:var(--green)"><i class="fab fa-whatsapp"></i> واتساب</a>
+    @php 
+      $waNumFooter = $contactSettings['whatsapp'] ?? '966550000000';
+      if (str_starts_with($waNumFooter, '0')) {
+          $waNumFooter = '966' . substr($waNumFooter, 1);
+      }
+    @endphp
+    <li><a href="https://wa.me/{{ $waNumFooter }}"><i class="fab fa-whatsapp"></i> واتساب</a></li>
   </div>
 </header>

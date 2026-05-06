@@ -24,7 +24,7 @@
           <h3>{{ $step['title'] ?? '' }}</h3>
           <p>
             @if($loop->first && isset($contactSettings['phone']))
-               اتصل بنا <span class="text-gold" style="direction: ltr; display: inline-block;">{{ $contactSettings['phone'] }}</span> أو تواصل عبر واتساب
+               اتصل بنا <a href="tel:{{ $contactSettings['phone'] }}" class="text-gold" style="direction: ltr; display: inline-block; font-weight: bold; text-decoration: underline;">{{ $contactSettings['phone'] }}</a> أو تواصل عبر واتساب
             @else
               {{ $step['desc'] ?? '' }}
             @endif
@@ -95,6 +95,9 @@ window.handleStepWa = function() {
     let url = currentStepWa;
     if (!url.startsWith('http')) {
         let cleanWa = url.replace(/\+|\s/g, '');
+        if (cleanWa.startsWith('0')) {
+            cleanWa = '966' + cleanWa.substring(1);
+        }
         url = 'https://wa.me/' + cleanWa;
     }
     window.open(url, '_blank');

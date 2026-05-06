@@ -42,7 +42,13 @@
         <h4>تواصل معنا</h4>
         <ul>
           <li><a href="tel:{{ $contactSettings['phone'] ?? '0550000000' }}"><i class="fas fa-phone"></i> {{ $contactSettings['phone'] ?? '0550000000' }}</a></li>
-          <li><a href="https://wa.me/{{ $contactSettings['whatsapp'] ?? '966550000000' }}"><i class="fab fa-whatsapp"></i> واتساب</a></li>
+          @php 
+            $waNumFooter = $contactSettings['whatsapp'] ?? '966550000000';
+            if (str_starts_with($waNumFooter, '0')) {
+                $waNumFooter = '966' . substr($waNumFooter, 1);
+            }
+          @endphp
+          <li><a href="https://wa.me/{{ $waNumFooter }}"><i class="fab fa-whatsapp"></i> واتساب</a></li>
           <li><a href="mailto:{{ $contactSettings['email'] ?? 'info@alostora.com' }}"><i class="fas fa-envelope"></i> {{ $contactSettings['email'] ?? 'info@alostora.com' }}</a></li>
           <li><a href="#"><i class="fas fa-map-marker-alt"></i> {{ $contactSettings['address'] ?? 'بريدة، القصيم' }}</a></li>
           <li><a href="#"><i class="fas fa-clock"></i> {{ $contactSettings['hours'] ?? 'السبت-الخميس 7ص-10م' }}</a></li>

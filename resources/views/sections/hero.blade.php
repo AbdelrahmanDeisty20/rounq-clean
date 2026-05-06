@@ -8,7 +8,7 @@
         <h2>{!! $homeSettings['hero']['title'] ?? 'خدمات نظافة احترافية في القصيم<br>لمنزل <span>يليق بك</span>' !!}</h2>
         <p class="hero-desc">{{ $homeSettings['hero']['desc'] ?? 'نقدم أرقى خدمات التنظيف المتكاملة للمنازل والفلل والشقق والمكاتب في منطقة القصيم. فريق مدرب، مواد آمنة، نتائج مضمونة، وأسعار تنافسية.' }}</p>
         <div class="hero-actions">
-          <a href="#" class="btn btn-gold" onclick="openModal()"><i class="fas fa-calendar-check"></i> {{ $homeSettings['hero']['btn1']['text'] ?? 'اطلب الخدمة الآن' }}</a>
+          <a href="tel:{{ $contactSettings['phone'] ?? '0550000000' }}" class="btn btn-gold btn-call"><i class="fas fa-phone-alt"></i> تواصل الآن</a>
           <a href="{{ $homeSettings['hero']['btn2']['link'] ?? 'https://wa.me/'.($contactSettings['wa'] ?? '966550000000') }}" class="btn btn-whatsapp">
             <i class="fab fa-whatsapp"></i> {{ $homeSettings['hero']['btn2']['text'] ?? 'تواصل واتساب' }}
           </a>

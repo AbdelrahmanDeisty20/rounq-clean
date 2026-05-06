@@ -44,7 +44,7 @@
         }
       @endphp
       <a href="{{ $waHeader }}" class="btn btn-whatsapp" id="headerWaBtn"><i class="fab fa-whatsapp"></i> واتساب</a>
-      <a href="#" class="btn btn-gold" onclick="openModal()"><i class="fas fa-calendar-check"></i> اطلب الخدمة</a>
+      <a href="tel:{{ $contactSettings['phone'] ?? '0550000000' }}" class="btn btn-gold btn-call" id="headerCallBtn"><i class="fas fa-phone-alt"></i> تواصل الآن</a>
     </div>
     <button class="mobile-toggle" onclick="toggleMobile()"><i class="fas fa-bars"></i></button>
   </div>

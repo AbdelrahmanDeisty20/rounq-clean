@@ -79,8 +79,38 @@ body { font-family: var(--font-main); background: #f8fafc; color: var(--dark); d
 .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 50px; font-family: var(--font-main); font-weight: 700; font-size: 15px; text-decoration: none; border: none; cursor: pointer; transition: var(--transition); white-space: nowrap; }
 .btn-primary { background: var(--primary); color: white; }
 .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-.btn-gold { background: linear-gradient(135deg, var(--gold), #e8c56a); color: var(--dark); }
-.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.4); }
+.btn-gold { 
+  background: linear-gradient(135deg, #c9a84c 0%, #f0d080 50%, #c9a84c 100%); 
+  background-size: 200% auto;
+  color: var(--dark); 
+  box-shadow: 0 4px 15px rgba(201,168,76,0.3);
+}
+.btn-gold:hover { 
+  background-position: right center;
+  transform: translateY(-3px) scale(1.03); 
+  box-shadow: 0 10px 30px rgba(201,168,76,0.5); 
+}
+.btn-call {
+    position: relative;
+    overflow: hidden;
+}
+.btn-call::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(30deg);
+    transition: none;
+    animation: shine 3s infinite;
+}
+@keyframes shine {
+    0% { left: -60%; }
+    20% { left: 120%; }
+    100% { left: 120%; }
+}
 .btn-green { background: var(--green); color: white; }
 .btn-green:hover { background: var(--green-light); transform: translateY(-2px); }
 .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
@@ -435,7 +465,8 @@ table.admin-table { width: 100%; border-collapse: separate; border-spacing: 0; f
 @media (max-width: 768px) {
   nav { display: none; }
   .mobile-toggle { display: block; }
-  .header-actions .btn { display: none; }
+  .header-actions .btn { display: flex; padding: 8px 15px; font-size: 12px; gap: 5px; }
+  .header-actions .btn-whatsapp { display: none; } /* Hide WhatsApp in header on mobile to save space, keep Call */
   .hero { padding: 60px 0; }
   .hero-stats { grid-template-columns: repeat(3, 1fr); }
   .steps-grid { grid-template-columns: 1fr 1fr; }

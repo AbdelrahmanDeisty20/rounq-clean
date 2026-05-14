@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
     <title>تسجيل الدخول | الأسطورة رونق قلب الخليج</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +32,7 @@
         <h2>لوحة التحكم</h2>
         <p>الأسطورة رونق قلب الخليج</p>
         
-        <div id="loginError" class="login-error">بيانات الدخول</div>
+        <div id="loginError" class="login-error">بيانات الدخول غير صحيحة</div>
         
         <form id="loginForm">
             @csrf

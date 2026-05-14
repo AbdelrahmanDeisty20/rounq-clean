@@ -33,7 +33,7 @@
         <h2>لوحة التحكم</h2>
         <p>الأسطورة رونق قلب الخليج</p>
         
-        <div id="loginError" class="login-error">بيانات الدخول </div>
+        <div id="loginError" class="login-error">بيانات الدخول ليست صحيحة</div>
         
         <form id="loginForm">
             @csrf

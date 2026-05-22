@@ -73,7 +73,7 @@
                     window.location.href = res.redirect;
                 },
                 error: function(xhr) {
-                    let errorMsg = 'بيانات الدخول غير صحيحة';
+                    let errorMsg = 'اسم المستخدم أو كلمة المرور غير صحيحة';
                     if (xhr.responseJSON && xhr.responseJSON.message) {
                         errorMsg = xhr.responseJSON.message;
                     }

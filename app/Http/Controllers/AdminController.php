@@ -67,7 +67,7 @@ class AdminController extends Controller
             $request->session()->regenerate();
             return response()->json(['success' => true, 'redirect' => route('admin.dashboard')]);
         }
-        return response()->json(['success' => false, 'message' => 'بيانات الدخول غير صحيحة'], 401);
+        return response()->json(['success' => false, 'message' => 'اسم المستخدم أو كلمة المرور غير صحيحة'], 401);
     }
 
     public function logout(Request $request)

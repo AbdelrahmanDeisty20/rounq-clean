@@ -33,7 +33,7 @@
         <h2>لوحة التحكم</h2>
         <p>الأسطورة رونق قلب الخليج</p>
         
-        <div id="loginError" class="login-error">بيانات الدخول ليست صحيحة</div>
+        <div id="loginError" class="login-error"></div>
         
         <form id="loginForm">
             @csrf
@@ -51,9 +51,14 @@
             </div>
         </form>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $('#loginForm').on('submit', function(e) {
             e.preventDefault();
             const btn = $('#submitBtn');
@@ -67,8 +72,12 @@
                 success: function(res) {
                     window.location.href = res.redirect;
                 },
-                error: function() {
-                    $('#loginError').addClass('show');
+                error: function(xhr) {
+                    let errorMsg = 'بيانات الدخول غير صحيحة';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                    $('#loginError').text(errorMsg).addClass('show');
                     btn.prop('disabled', false).text('تسجيل الدخول');
                 }
             });

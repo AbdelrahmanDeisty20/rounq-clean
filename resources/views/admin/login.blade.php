@@ -39,11 +39,11 @@
             @csrf
             <div class="form-group">
                 <label>اسم المستخدم</label>
-                <input type="text" name="username" id="username" required value="admin">
+                <input type="text" name="username" id="username" required>
             </div>
             <div class="form-group">
                 <label>كلمة المرور</label>
-                <input type="password" name="password" id="password" required value="Admin@12345">
+                <input type="password" name="password" id="password" required>
             </div>
             <button type="submit" class="btn-login" id="submitBtn">تسجيل الدخول</button>
             <div style="margin-top:20px">

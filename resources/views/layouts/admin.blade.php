@@ -46,6 +46,11 @@
                     <i class="fas fa-images"></i> معرض الصور
                 </a>
                 @endcan
+                @can('manage videos')
+                <a href="{{ route('admin.videos') }}" class="nav-item {{ request()->routeIs('admin.videos') ? 'active' : '' }}">
+                    <i class="fas fa-video"></i> الفيديوهات
+                </a>
+                @endcan
                 @can('manage testimonials')
                 <a href="{{ route('admin.testimonials') }}" class="nav-item {{ request()->routeIs('admin.testimonials') ? 'active' : '' }}">
                     <i class="fas fa-star"></i> آراء العملاء

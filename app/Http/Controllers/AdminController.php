@@ -21,6 +21,9 @@ use App\Models\Booking;
 use App\Models\Message;
 use App\Services\GalleryService;
 use App\Models\GalleryImage;
+use App\Services\VideoService;
+use App\Models\Video;
+use App\Http\Requests\VideoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +39,7 @@ class AdminController extends Controller
     protected $settingService;
     protected $messageService;
     protected $galleryService;
+    protected $videoService;
 
     public function __construct(
         ServiceService $serviceService,
@@ -46,7 +50,8 @@ class AdminController extends Controller
         BlogService $blogService,
         MessageService $messageService,
         SettingService $settingService,
-        GalleryService $galleryService
+        GalleryService $galleryService,
+        VideoService $videoService
     ) {
         $this->serviceService = $serviceService;
         $this->bookingService = $bookingService;
@@ -57,6 +62,7 @@ class AdminController extends Controller
         $this->messageService = $messageService;
         $this->settingService = $settingService;
         $this->galleryService = $galleryService;
+        $this->videoService = $videoService;
     }
 
     // Auth
@@ -147,6 +153,12 @@ class AdminController extends Controller
     {
         $gallery = $this->galleryService->getAll();
         return view('admin.pages.gallery', compact('gallery'));
+    }
+
+    public function videos()
+    {
+        $videos = $this->videoService->getAll();
+        return view('admin.pages.videos', compact('videos'));
     }
 
     public function seo()
@@ -644,6 +656,72 @@ class AdminController extends Controller
     public function deleteGallery($id)
     {
         $this->galleryService->delete($id);
+        return response()->json(['success' => true]);
+    }
+
+    // Videos CRUD
+    public function getVideos()
+    {
+        return response()->json($this->videoService->getAll());
+    }
+
+    public function storeVideo(VideoRequest $request)
+    {
+        try {
+            $data = $request->validated();
+
+            if ($request->hasFile('video_file')) {
+                $file = $request->file('video_file');
+                $videoName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $destPath = base_path('uploads/videos');
+                
+                if (!file_exists($destPath)) {
+                    @mkdir($destPath, 0755, true);
+                }
+
+                if ($file->move($destPath, $videoName)) {
+                    $data['url'] = '/uploads/videos/' . $videoName;
+                } else {
+                    throw new \Exception("فشل في حفظ ملف الفيديو على السيرفر");
+                }
+            }
+
+            return response()->json($this->videoService->create($data));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updateVideo(VideoRequest $request, $id)
+    {
+        try {
+            $data = $request->validated();
+
+            if ($request->hasFile('video_file')) {
+                $file = $request->file('video_file');
+                $videoName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $destPath = base_path('uploads/videos');
+                
+                if (!file_exists($destPath)) {
+                    @mkdir($destPath, 0755, true);
+                }
+
+                if ($file->move($destPath, $videoName)) {
+                    $data['url'] = '/uploads/videos/' . $videoName;
+                } else {
+                    throw new \Exception("فشل في حفظ ملف الفيديو الجديد على السيرفر");
+                }
+            }
+
+            return response()->json($this->videoService->update($id, $data));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function deleteVideo($id)
+    {
+        $this->videoService->delete($id);
         return response()->json(['success' => true]);
     }
 }

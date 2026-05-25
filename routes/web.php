@@ -76,6 +76,13 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::delete('/gallery/{id}', [AdminController::class, 'deleteGallery']);
     });
 
+    Route::middleware('permission:manage videos')->group(function() {
+        Route::get('/videos', [AdminController::class, 'videos'])->name('admin.videos');
+        Route::post('/videos', [AdminController::class, 'storeVideo']);
+        Route::post('/videos/{id}', [AdminController::class, 'updateVideo']);
+        Route::delete('/videos/{id}', [AdminController::class, 'deleteVideo']);
+    });
+
     // Settings & Others
     Route::get('/contact-settings', [AdminController::class, 'contactSettings'])->name('admin.contact_settings')->middleware('permission:manage contact settings');
     Route::get('/seo', [AdminController::class, 'seo'])->name('admin.seo')->middleware('permission:manage seo');

@@ -13,6 +13,7 @@ use App\Services\MessageService;
 use App\Http\Requests\BookingRequest;
 use App\Http\Requests\ContactRequest;
 use App\Services\GalleryService;
+use App\Services\VideoService;
 use Illuminate\Http\Request;
 
 class SiteController extends Controller
@@ -26,6 +27,7 @@ class SiteController extends Controller
     protected $bookingService;
     protected $messageService;
     protected $galleryService;
+    protected $videoService;
 
     public function __construct(
         ServiceService $serviceService,
@@ -36,7 +38,8 @@ class SiteController extends Controller
         SettingService $settingService,
         BookingService $bookingService,
         MessageService $messageService,
-        GalleryService $galleryService
+        GalleryService $galleryService,
+        VideoService $videoService
     ) {
         $this->serviceService = $serviceService;
         $this->offerService = $offerService;
@@ -47,6 +50,7 @@ class SiteController extends Controller
         $this->bookingService = $bookingService;
         $this->messageService = $messageService;
         $this->galleryService = $galleryService;
+        $this->videoService = $videoService;
     }
 
     public function index()
@@ -57,8 +61,9 @@ class SiteController extends Controller
         $faqs = $this->faqService->getAllActive();
         $blogs = $this->blogService->getPublished(3);
         $gallery = $this->galleryService->getAll();
+        $videos = $this->videoService->getAllActive();
         
-        return view('welcome', compact('services', 'offers', 'testimonials', 'faqs', 'blogs', 'gallery'));
+        return view('welcome', compact('services', 'offers', 'testimonials', 'faqs', 'blogs', 'gallery', 'videos'));
     }
 
     public function storeBooking(BookingRequest $request)

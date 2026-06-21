@@ -59,14 +59,18 @@
     @stack('scripts')
     <script>
         $(document).ready(function() {
-            // Smooth Scroll
-            $('a[href^="#"]').on('click', function(e) {
-                e.preventDefault();
-                const target = $(this.hash);
-                if (target.length) {
-                    $('html, body').animate({
-                        scrollTop: target.offset().top - 80
-                    }, 800, 'swing');
+            // Snappy Smooth Scroll for hash links
+            $('nav a, .mobile-nav a, a[href^="#"]').on('click', function(e) {
+                const href = $(this).attr('href');
+                if (href && href.startsWith('#') && href.length > 1) {
+                    const target = $(href);
+                    if (target.length) {
+                        e.preventDefault();
+                        $('html, body').stop().animate({
+                            scrollTop: target.offset().top - 80
+                        }, 400); // Snappy and smooth scroll
+                        $('#mobileNav').removeClass('open');
+                    }
                 }
             });
 
@@ -81,11 +85,6 @@
         function toggleMobile() {
             document.getElementById('mobileNav').classList.toggle('open');
         }
-
-        // Close mobile nav when clicking a link
-        $(document).on('click', '#mobileNav a', function() {
-            $('#mobileNav').removeClass('open');
-        });
     </script>
 </body>
 </html>

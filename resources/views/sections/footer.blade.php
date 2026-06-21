@@ -22,7 +22,7 @@
           <li><a href="#why-us">من نحن</a></li>
           <li><a href="#services">خدماتنا</a></li>
           <li><a href="#gallery-section">معرض الأعمال</a></li>
-          <li><a href="#blogGrid">المقالات</a></li>
+          <li><a href="#blog">المقالات</a></li>
           <li><a href="#contact">تواصل معنا</a></li>
         </ul>
       </div>

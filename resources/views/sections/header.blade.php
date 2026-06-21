@@ -30,7 +30,7 @@
       <a href="#home" class="active">الرئيسية</a>
       <a href="#why-us">من نحن</a>
       <a href="#services">خدماتنا</a>
-      <a href="#gallery">معرض الأعمال</a>
+      <a href="#gallery-section">معرض الأعمال</a>
       <a href="#blog">المقالات</a>
       <a href="#contact">تواصل معنا</a>
     </nav>
@@ -53,7 +53,7 @@
     <a href="#why-us">من نحن</a>
     <a href="#services">خدماتنا</a>
     <a href="#gallery-section">معرض الأعمال</a>
-    <a href="#blogGrid">المقالات</a>
+    <a href="#blog">المقالات</a>
     <a href="#contact">تواصل معنا</a>
     @php 
       $waMobile = $contactSettings['whatsapp'] ?? $contactSettings['phone'] ?? '966550000000';

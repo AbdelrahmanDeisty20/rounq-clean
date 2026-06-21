@@ -119,19 +119,6 @@ $(document).ready(function() {
         notif.addClass('show');
         setTimeout(() => notif.removeClass('show'), 5000);
     };
-
-    // Restore Smooth scroll for nav links
-    $('nav a, .mobile-nav a, a[href^="#"]').on('click', function(e) {
-        const href = $(this).attr('href');
-        if (href && href.startsWith('#') && href.length > 1) {
-            e.preventDefault();
-            const target = $(href);
-            if (target.length) {
-                $('html, body').animate({ scrollTop: target.offset().top - 80 }, 800);
-                $('#mobileNav').removeClass('open');
-            }
-        }
-    });
 });
 </script>
 @endsection

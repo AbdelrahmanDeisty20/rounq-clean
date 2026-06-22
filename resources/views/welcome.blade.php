@@ -4,6 +4,7 @@
 <div class="site-wrap" id="siteWrap">
     @include('sections.header')
     @include('sections.hero')
+    @include('sections.partner')
     @include('sections.videos')
     @include('sections.services')
     @include('sections.why_us')

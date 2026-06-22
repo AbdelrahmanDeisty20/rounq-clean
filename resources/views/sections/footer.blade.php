@@ -18,12 +18,12 @@
       <div class="footer-col">
         <h4>الصفحات</h4>
         <ul>
-          <li><a href="#home">الرئيسية</a></li>
-          <li><a href="#why-us">من نحن</a></li>
-          <li><a href="#services">خدماتنا</a></li>
-          <li><a href="#gallery-section">معرض الأعمال</a></li>
-          <li><a href="#blog">المقالات</a></li>
-          <li><a href="#contact">تواصل معنا</a></li>
+          <li><a href="{{ request()->is('/') ? '#home' : url('/') }}">الرئيسية</a></li>
+          <li><a href="{{ route('site.about') }}">من نحن</a></li>
+          <li><a href="{{ request()->is('/') ? '#services' : url('/#services') }}">خدماتنا</a></li>
+          <li><a href="{{ request()->is('/') ? '#gallery-section' : url('/#gallery-section') }}">معرض الأعمال</a></li>
+          <li><a href="{{ request()->is('/') ? '#blog' : url('/#blog') }}">المقالات</a></li>
+          <li><a href="{{ request()->is('/') ? '#contact' : url('/#contact') }}">تواصل معنا</a></li>
         </ul>
       </div>
       <div class="footer-col">

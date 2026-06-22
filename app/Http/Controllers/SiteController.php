@@ -66,6 +66,12 @@ class SiteController extends Controller
         return view('welcome', compact('services', 'offers', 'testimonials', 'faqs', 'blogs', 'gallery', 'videos'));
     }
 
+    public function about()
+    {
+        $services = $this->serviceService->getAllActive();
+        return view('about', compact('services'));
+    }
+
     public function storeBooking(BookingRequest $request)
     {
         $data = $request->validated();

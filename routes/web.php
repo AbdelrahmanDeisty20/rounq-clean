@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 
 // Site Routes
 Route::get('/', [SiteController::class, 'index'])->name('site.home');
+Route::get('/about-us', [SiteController::class, 'about'])->name('site.about');
 Route::post('/book', [SiteController::class, 'storeBooking'])->name('booking.store');
 Route::post('/contact', [SiteController::class, 'storeContact'])->name('contact.store');
 Route::post('/track-click', [SiteController::class, 'trackClick'])->name('track.click');

@@ -27,12 +27,12 @@
       </div>
     </a>
     <nav id="mainNav">
-      <a href="#home" class="active">الرئيسية</a>
-      <a href="#why-us">من نحن</a>
-      <a href="#services">خدماتنا</a>
-      <a href="#gallery-section">معرض الأعمال</a>
-      <a href="#blog">المقالات</a>
-      <a href="#contact">تواصل معنا</a>
+      <a href="{{ request()->is('/') ? '#home' : url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">الرئيسية</a>
+      <a href="{{ route('site.about') }}" class="{{ request()->routeIs('site.about') ? 'active' : '' }}">من نحن</a>
+      <a href="{{ request()->is('/') ? '#services' : url('/#services') }}">خدماتنا</a>
+      <a href="{{ request()->is('/') ? '#gallery-section' : url('/#gallery-section') }}">معرض الأعمال</a>
+      <a href="{{ request()->is('/') ? '#blog' : url('/#blog') }}">المقالات</a>
+      <a href="{{ request()->is('/') ? '#contact' : url('/#contact') }}">تواصل معنا</a>
     </nav>
     <div class="header-actions">
       @php 
@@ -49,12 +49,12 @@
     <button class="mobile-toggle" onclick="toggleMobile()"><i class="fas fa-bars"></i></button>
   </div>
   <div class="mobile-nav" id="mobileNav">
-    <a href="#home">الرئيسية</a>
-    <a href="#why-us">من نحن</a>
-    <a href="#services">خدماتنا</a>
-    <a href="#gallery-section">معرض الأعمال</a>
-    <a href="#blog">المقالات</a>
-    <a href="#contact">تواصل معنا</a>
+    <a href="{{ request()->is('/') ? '#home' : url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">الرئيسية</a>
+    <a href="{{ route('site.about') }}" class="{{ request()->routeIs('site.about') ? 'active' : '' }}">من نحن</a>
+    <a href="{{ request()->is('/') ? '#services' : url('/#services') }}">خدماتنا</a>
+    <a href="{{ request()->is('/') ? '#gallery-section' : url('/#gallery-section') }}">معرض الأعمال</a>
+    <a href="{{ request()->is('/') ? '#blog' : url('/#blog') }}">المقالات</a>
+    <a href="{{ request()->is('/') ? '#contact' : url('/#contact') }}">تواصل معنا</a>
     @php 
       $waMobile = $contactSettings['whatsapp'] ?? $contactSettings['phone'] ?? '966550000000';
       $waMobile = str_replace(['+', ' ', '-', '(', ')'], '', $waMobile);

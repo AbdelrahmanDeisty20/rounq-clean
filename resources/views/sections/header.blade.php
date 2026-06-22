@@ -29,10 +29,10 @@
     <nav id="mainNav">
       <a href="{{ request()->is('/') ? '#home' : url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">الرئيسية</a>
       <a href="{{ route('site.about') }}" class="{{ request()->routeIs('site.about') ? 'active' : '' }}">من نحن</a>
-      <a href="{{ request()->is('/') ? '#services' : url('/#services') }}">خدماتنا</a>
-      <a href="{{ request()->is('/') ? '#gallery-section' : url('/#gallery-section') }}">معرض الأعمال</a>
-      <a href="{{ request()->is('/') ? '#blog' : url('/#blog') }}">المقالات</a>
-      <a href="{{ request()->is('/') ? '#contact' : url('/#contact') }}">تواصل معنا</a>
+      <a href="{{ route('site.services') }}" class="{{ request()->routeIs('site.services') ? 'active' : '' }}">خدماتنا</a>
+      <a href="{{ route('site.gallery') }}" class="{{ request()->routeIs('site.gallery') ? 'active' : '' }}">معرض الأعمال</a>
+      <a href="{{ route('site.blog') }}" class="{{ request()->routeIs('site.blog') ? 'active' : '' }}">المقالات</a>
+      <a href="{{ route('site.contact') }}" class="{{ request()->routeIs('site.contact') ? 'active' : '' }}">تواصل معنا</a>
     </nav>
     <div class="header-actions">
       @php 
@@ -51,10 +51,10 @@
   <div class="mobile-nav" id="mobileNav">
     <a href="{{ request()->is('/') ? '#home' : url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">الرئيسية</a>
     <a href="{{ route('site.about') }}" class="{{ request()->routeIs('site.about') ? 'active' : '' }}">من نحن</a>
-    <a href="{{ request()->is('/') ? '#services' : url('/#services') }}">خدماتنا</a>
-    <a href="{{ request()->is('/') ? '#gallery-section' : url('/#gallery-section') }}">معرض الأعمال</a>
-    <a href="{{ request()->is('/') ? '#blog' : url('/#blog') }}">المقالات</a>
-    <a href="{{ request()->is('/') ? '#contact' : url('/#contact') }}">تواصل معنا</a>
+    <a href="{{ route('site.services') }}" class="{{ request()->routeIs('site.services') ? 'active' : '' }}">خدماتنا</a>
+    <a href="{{ route('site.gallery') }}" class="{{ request()->routeIs('site.gallery') ? 'active' : '' }}">معرض الأعمال</a>
+    <a href="{{ route('site.blog') }}" class="{{ request()->routeIs('site.blog') ? 'active' : '' }}">المقالات</a>
+    <a href="{{ route('site.contact') }}" class="{{ request()->routeIs('site.contact') ? 'active' : '' }}">تواصل معنا</a>
     @php 
       $waMobile = $contactSettings['whatsapp'] ?? $contactSettings['phone'] ?? '966550000000';
       $waMobile = str_replace(['+', ' ', '-', '(', ')'], '', $waMobile);

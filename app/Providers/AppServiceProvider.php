@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Share settings with frontend too
-        View::composer(['welcome', 'about', 'layouts.app', 'sections.*'], function ($view) {
+        View::composer(['welcome', 'about', 'services', 'gallery', 'blog', 'contact', 'layouts.app', 'sections.*'], function ($view) {
             $settings = Setting::all()->pluck('value', 'key');
             $view->with('homeSettings', $settings['homeSettings'] ?? []);
             $view->with('contactSettings', $settings['contactSettings'] ?? []);

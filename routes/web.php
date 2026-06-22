@@ -6,7 +6,11 @@ use App\Http\Controllers\AdminController;
 
 // Site Routes
 Route::get('/', [SiteController::class, 'index'])->name('site.home');
-Route::get('/about-us', [SiteController::class, 'about'])->name('site.about');
+Route::get('/about', [SiteController::class, 'about'])->name('site.about');
+Route::get('/services', [SiteController::class, 'services'])->name('site.services');
+Route::get('/gallery', [SiteController::class, 'gallery'])->name('site.gallery');
+Route::get('/blog', [SiteController::class, 'blog'])->name('site.blog');
+Route::get('/contact', [SiteController::class, 'contact'])->name('site.contact');
 Route::post('/book', [SiteController::class, 'storeBooking'])->name('booking.store');
 Route::post('/contact', [SiteController::class, 'storeContact'])->name('contact.store');
 Route::post('/track-click', [SiteController::class, 'trackClick'])->name('track.click');

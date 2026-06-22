@@ -72,6 +72,32 @@ class SiteController extends Controller
         return view('about', compact('services'));
     }
 
+    public function services()
+    {
+        $services = $this->serviceService->getAllActive();
+        return view('services', compact('services'));
+    }
+
+    public function gallery()
+    {
+        $services = $this->serviceService->getAllActive();
+        $gallery = $this->galleryService->getAll();
+        return view('gallery', compact('services', 'gallery'));
+    }
+
+    public function blog()
+    {
+        $services = $this->serviceService->getAllActive();
+        $blogs = $this->blogService->getPublished(12);
+        return view('blog', compact('services', 'blogs'));
+    }
+
+    public function contact()
+    {
+        $services = $this->serviceService->getAllActive();
+        return view('contact', compact('services'));
+    }
+
     public function storeBooking(BookingRequest $request)
     {
         $data = $request->validated();

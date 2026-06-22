@@ -20,10 +20,10 @@
         <ul>
           <li><a href="{{ request()->is('/') ? '#home' : url('/') }}">الرئيسية</a></li>
           <li><a href="{{ route('site.about') }}">من نحن</a></li>
-          <li><a href="{{ request()->is('/') ? '#services' : url('/#services') }}">خدماتنا</a></li>
-          <li><a href="{{ request()->is('/') ? '#gallery-section' : url('/#gallery-section') }}">معرض الأعمال</a></li>
-          <li><a href="{{ request()->is('/') ? '#blog' : url('/#blog') }}">المقالات</a></li>
-          <li><a href="{{ request()->is('/') ? '#contact' : url('/#contact') }}">تواصل معنا</a></li>
+          <li><a href="{{ route('site.services') }}">خدماتنا</a></li>
+          <li><a href="{{ route('site.gallery') }}">معرض الأعمال</a></li>
+          <li><a href="{{ route('site.blog') }}">المقالات</a></li>
+          <li><a href="{{ route('site.contact') }}">تواصل معنا</a></li>
         </ul>
       </div>
       <div class="footer-col">

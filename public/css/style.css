@@ -324,10 +324,10 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 20px;
-    max-width: 1200px;
+    padding: 14px 30px;
+    max-width: 1600px;
     margin: 0 auto;
-    gap: 20px;
+    gap: 10px;
 }
 .logo {
     display: flex;
@@ -366,10 +366,10 @@ nav {
 nav a {
     color: var(--gray-700);
     text-decoration: none;
-    padding: 8px 14px;
+    padding: 8px 10px;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13.5px;
     transition: var(--transition);
     position: relative;
 }
@@ -1917,6 +1917,18 @@ table.admin-table {
     }
     .offers-grid {
         grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 1200px) and (min-width: 769px) {
+    nav a {
+        padding: 6px 6px;
+        font-size: 11px;
+    }
+    .header-inner {
+        padding: 14px 15px;
+    }
+    .header-actions .btn {
+        padding: 8px 12px;
+        font-size: 12px;
     }
 }
 @media (max-width: 768px) {

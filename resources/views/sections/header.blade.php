@@ -44,6 +44,7 @@
       <a href="{{ route('site.contact') }}" class="{{ request()->routeIs('site.contact') ? 'active' : '' }}">تواصل
         معنا</a>
       <a href="https://rtscllean.com/">أفضل شركة نظافة بالقصيم</a>
+      <a href="https://rtscllean.com/">cleaning-company-qassim</a>
     </nav>
     <div class="header-actions">
       @php 
@@ -72,6 +73,7 @@
     <a href="{{ route('site.blog') }}" class="{{ request()->routeIs('site.blog') ? 'active' : '' }}">المقالات</a>
     <a href="{{ route('site.contact') }}" class="{{ request()->routeIs('site.contact') ? 'active' : '' }}">تواصل معنا</a>
     <a href="https://rtscllean.com/">أفضل شركة نظافة بالقصيم</a>
+    <a href="https://rtscllean.com/">cleaning-company-qassim</a>
     @php 
             $waMobile = $contactSettings['whatsapp'] ?? $contactSettings['phone'] ?? '966550000000';
       $waMobile = str_replace(['+', ' ', '-', '(', ')'], '', $waMobile);
